@@ -4,30 +4,13 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
-
+#include "Game.h"
 
 using namespace std;
 using namespace sf;
 
 int main() {
 
-	int fps = 60;
-	bool gameover= false;
-
-
-
-	RenderWindow* Ventana1;
-	Ventana1 = new RenderWindow(VideoMode(800, 600), "Hola");
-	Ventana1->setFramerateLimit(fps);
-
-	while (!gameover) {
-		Ventana1->clear(Color::Magenta);
-
-		Ventana1->display();
-	}
-
-
-	cout << "Aqui se empieza...";
-	cout << "Un Push";
+	Game* juego = new Game(800, 600, "Wenas");
 	return 0;
 }
