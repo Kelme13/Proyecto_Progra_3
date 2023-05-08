@@ -16,7 +16,7 @@ private:
 
 
 public:
-	Nave(Vector2f pos_a);
+	Nave(Vector2f& pos_a);
 	~Nave();
 
 	void Draw(RenderTarget& rt) const;  
