@@ -11,10 +11,6 @@ using namespace sf;
 
 int main() {
 
-
-
-
-
 	cout << "Aqui se empieza...";
 	cout << "Un Push";
 	return 0;
