@@ -9,8 +9,9 @@ Game::Game(int ancho, int alto) {
 
 	Ventana = new RenderWindow(VideoMode(ancho, alto), "titulo");
 
+	Vector2f pos_centro = { Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f };
 
-	Nave nave({ Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f });
+	nave = new Nave(pos_centro);
 
 	// Todo para la nave
 

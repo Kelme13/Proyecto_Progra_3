@@ -12,7 +12,7 @@ private:
 	int fps = 60;
 
 	// Nave
-	Nave nave;
+	Nave* nave;
 
 	Texture* tex_nave;
 	Sprite* spr_nave;
