@@ -12,7 +12,8 @@ private:
 	int fps = 60;
 
 	// Nave
-	Nave* nave;
+	Nave nave;
+
 	Texture* tex_nave;
 	Sprite* spr_nave;
 
@@ -24,7 +25,7 @@ private:
 
 
 public:
-	Game(int ancho, int alto, std::string titulo);
+	Game(int ancho, int alto);
 	void Dibujar();
 	void Loop();
 

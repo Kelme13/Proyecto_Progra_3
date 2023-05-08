@@ -1,6 +1,6 @@
 #include "Nave.h"
 
-Nave::Nave(RenderTarget& rt) {
+Nave::Nave(Vector2f pos_a) {
 
 	textura = new Texture();
 	textura->loadFromFile("Assets\\Mini Pixel Pack 3\\Player ship\\Player_ship.png");
@@ -9,8 +9,7 @@ Nave::Nave(RenderTarget& rt) {
 
 
 	vel = { 0.f, 0.f };
-	pos.x = rt.getSize().x / 2.f;
-	pos.y = rt.getSize().y - 100.f;
+	pos = pos_a;
 	
 }
 

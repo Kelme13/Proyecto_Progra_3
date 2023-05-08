@@ -14,14 +14,12 @@ private:
 
 
 public:
-	Nave(RenderTarget& rt);
+	Nave(Vector2f pos_a);
 	~Nave();
 
 	void Draw(RenderTarget& rt) const;  
 	void SetDireccion(const Vector2f& dir);
 	void Update(float dt);
-
-
 
 };
 

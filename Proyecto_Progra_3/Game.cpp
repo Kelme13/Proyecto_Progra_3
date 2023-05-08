@@ -1,30 +1,22 @@
 #include "Game.h"
-#include "Nave.h"
 
-enum Direcciones{Niguna, Izquierda, Derecha};
 
-Game::Game(int ancho, int alto, std::string titulo) {
+Game::Game(int ancho, int alto) {
 	 
 	// Para la ventana
 
 	fps = 60;
 
-	Ventana = new RenderWindow(VideoMode(ancho, alto), titulo);
+	Ventana = new RenderWindow(VideoMode(ancho, alto), "titulo");
 
 
-
-	Nave* nave = new Nave(*Ventana);
-
-
-
+	Nave nave({ Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f });
 
 	// Todo para la nave
 
 	int x, y, dx, dy;
 
 	int indiceX, indiceY;
-
-	Direcciones direccion = Niguna;
 
 	tex_nave = new Texture();
 	spr_nave = new Sprite();
@@ -46,7 +38,6 @@ void Game::Loop(){
 	while (Ventana->isOpen()) {
 		
 		dir = { 0.f, 0.f };
-
 		procesarEventosTeclado();
 
 		Dibujar();
@@ -85,6 +76,13 @@ void Game::procesarEventosTeclado()
 			{
 				dir.y += 1.f;
 			}
+
+			nave->SetDireccion(dir);
+
+			// update model
+			nave->Update(1.f / 60.f);
+
+
 			break;
 
 		}
