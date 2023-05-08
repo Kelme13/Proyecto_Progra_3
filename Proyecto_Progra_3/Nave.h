@@ -9,7 +9,7 @@ private:
 	Vector2f pos;
 	Vector2f vel;
 
-	static  constexpr float speed = 100.0f;
+	static  constexpr float speed = 200.0f;
 
 	Texture* textura;
 	Sprite* spr;

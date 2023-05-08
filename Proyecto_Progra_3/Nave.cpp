@@ -22,10 +22,12 @@ void Nave::SetDireccion(const Vector2f& dir)
 void Nave::Update(float dt)
 {
 	pos += vel * dt;
+	spr->setPosition(pos);
 }
 
 void Nave::Draw(RenderTarget& rt) const
 {
+	spr->setPosition(pos);
 	rt.draw(*spr);
 }
 

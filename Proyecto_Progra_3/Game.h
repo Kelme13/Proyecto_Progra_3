@@ -23,7 +23,6 @@ private:
 	// Vector para la direccion de la nave
 	Vector2f dir;
 
-
 public:
 	Game(int ancho, int alto);
 	void Dibujar();
