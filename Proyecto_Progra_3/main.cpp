@@ -10,6 +10,6 @@ using namespace std;
 using namespace sf;
 
 int main() {
-		Game* juego = new Game(800, 600, "Wenas");
+		Game* juego = new Game(800, 900, "Wenas");
 	return 0;
 }
