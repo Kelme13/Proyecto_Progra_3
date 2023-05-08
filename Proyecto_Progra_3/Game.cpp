@@ -28,7 +28,7 @@ Game::Game(int ancho, int alto) {
 	spr_nave->setPosition(Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f);
 	spr_nave->setTextureRect({ 16,0,16,16 });
 	
-
+	eventos_1 = new Event();
 
 	Loop();
 }
