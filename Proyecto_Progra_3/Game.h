@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "Nave.h"
+#include "Background.h"
 
 
 using namespace sf;
@@ -13,6 +14,9 @@ private:
 
 	// Nave
 	Nave* nave;
+
+	//Fondo
+	Background* BG;
 
 	Texture* tex_nave;
 	Sprite* spr_nave;
@@ -27,7 +31,7 @@ public:
 	Game(int ancho, int alto);
 	void Dibujar();
 	void Loop();
-
+	void Cerrar();
 	void procesarEventosTeclado();
 
 
