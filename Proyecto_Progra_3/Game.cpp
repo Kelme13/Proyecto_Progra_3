@@ -14,6 +14,7 @@ Game::Game(int ancho, int alto) {
 	Vector2f pos_centro = { Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f };
 
 	nave = new Nave(pos_centro);
+	BG = new Background("Assets\\Backgrounds\\SpaceMoving.gif");
 
 	// Todo para la nave
 
@@ -46,13 +47,25 @@ void Game::Loop(){
 
 	while (Ventana->isOpen()) {
 		
-		dir = { 0.f, 0.f };
+		//dir = { 0.f, 0.f };
 
 		
-		procesarEventosTeclado();
-
+		//procesarEventosTeclado();
+		Cerrar();
 		Dibujar();
 		 
+	}
+}
+
+
+void Game::Cerrar() {
+	sf::Event event;
+	while (Ventana->pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			Ventana->close();
+		}
 	}
 }
 
@@ -118,9 +131,9 @@ void Game::procesarEventosTeclado()
 
 void Game::Dibujar() {
 	Ventana->clear();
-	
+	BG->Draw(*Ventana);
 	nave->Draw(*Ventana);
-
+	
 	Ventana->display();
 
 }
