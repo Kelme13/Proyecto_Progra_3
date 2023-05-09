@@ -15,7 +15,9 @@ Nave::Nave(Vector2f& pos_a) {
 	animations[int(AnimationIndex::LeftMov)] = new Animation(0, 0, 16, 16);
 	animations[int(AnimationIndex::Non)] = new Animation(16, 0, 16, 16);
 	animations[int(AnimationIndex::LeftMov)] = new Animation(32, 0, 16, 16);
+
 	
+
 }
 
 void Nave::SetDireccion(const Vector2f& dir)

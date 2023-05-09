@@ -1,9 +1,8 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include <chrono>
 #include "Nave.h"
 
-
-using namespace sf;
 
 class Game {
 private:
@@ -22,6 +21,8 @@ private:
 
 	// Vector para la direccion de la nave
 	Vector2f dir;
+	
+	std::chrono::steady_clock::time_point tp;
 
 public:
 	Game(int ancho, int alto);

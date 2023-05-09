@@ -1,5 +1,6 @@
 #include "Game.h"
-#include <chrono>
+
+using namespace std;
 
 
 Game::Game(int ancho, int alto) {
@@ -33,7 +34,7 @@ Game::Game(int ancho, int alto) {
 
 
 	// timepoint for delta time measurement
-	// auto tp = std::chrono::steady_clock::now();
+	tp = std::chrono::steady_clock::now();
 
 
 	Loop();
@@ -57,7 +58,7 @@ void Game::Loop(){
 
 void Game::procesarEventosTeclado()
 {
-	/*
+	
 
 	// get dt
 	float dt;
@@ -67,7 +68,7 @@ void Game::procesarEventosTeclado()
 		tp = new_tp;
 	}
 
-	*/
+	
 
 	while (Ventana->pollEvent(*eventos_1)) {
 
@@ -102,7 +103,7 @@ void Game::procesarEventosTeclado()
 			nave->SetDireccion(dir);
 
 			// update model
-			nave->Update(1.f / 60.f);
+			nave->Update(dt);
 
 
 			break;
