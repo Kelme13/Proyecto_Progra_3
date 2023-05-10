@@ -14,7 +14,7 @@ using namespace sf;
 int main() {
 
 
-	Game* juego = new Game(800, 900);
+	Game* juego = new Game();
 
 	return 0;
 }

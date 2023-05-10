@@ -2,18 +2,20 @@
 #include <chrono>
 
 
-Game::Game(int ancho, int alto) {
+Game::Game() {
 	 
 	// Para la ventana
 
 	fps = 60;
+	
+	
 
 	Ventana = new RenderWindow(VideoMode(ancho, alto), "titulo");
 
 	Vector2f pos_centro = { Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f };
 
 	nave = new Nave(pos_centro);
-	BG = new Background("Assets\\Backgrounds\\SpaceMoving.gif");
+	BG = new Background("Assets\\Backgrounds\\Dynamic\\Nebula Blue.png", "Assets\\Backgrounds\\Dynamic\\EstrellaTipo1.png");
 
 	// Todo para la nave
 
@@ -40,6 +42,15 @@ Game::Game(int ancho, int alto) {
 	Loop();
 }
 
+
+
+int Game::GetAncho() {
+	return ancho;
+}
+
+int Game::GetAlto() {
+	return alto;
+}
 
 void Game::Loop(){
 
