@@ -25,9 +25,9 @@ private:
 	// Los frames los guardamos en un arreglo de rectangulos para que su manipulacion sea mas sencilla
 	IntRect frames[nFrames];
 	// Representa el frame que esta actualmente
-	int iFrame = 2;
+	int iFrame;
 
-	float time = 0.f;
+	float time;
 
 
 };
@@ -38,11 +38,12 @@ private:
 	Vector2f pos;
 	Vector2f vel;
 
-	static  constexpr float speed = 200.0f;
+	static  constexpr float speed = 150.0f;
 
 	Texture* textura;
 	Sprite* spr;
 
+	IntRect frames[3];
 
 	enum class AnimationIndex
 	{
@@ -52,7 +53,7 @@ private:
 		Count
 	};
 
-	Animation* animations[int(AnimationIndex::Count )]; 
+	Animation animations = Animation(0,0,16,16);
 	AnimationIndex curAnimation = AnimationIndex::RighMov;
 
 

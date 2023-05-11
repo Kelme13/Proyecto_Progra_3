@@ -26,6 +26,8 @@ private:
 	// Vector para la direccion de la nave
 	Vector2f dir;
 	
+
+	// time point for delta time measure
 	std::chrono::steady_clock::time_point tp;
 
 public:

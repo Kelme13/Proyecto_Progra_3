@@ -10,6 +10,7 @@ Game::Game(int ancho, int alto) {
 	fps = 60;
 
 	Ventana = new RenderWindow(VideoMode(ancho, alto), "titulo");
+	Ventana->setFramerateLimit(fps);
 
 	Vector2f pos_centro = { Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f };
 
@@ -37,7 +38,7 @@ Game::Game(int ancho, int alto) {
 	// timepoint for delta time measurement
 	tp = std::chrono::steady_clock::now();
 
-
+	// inicia el loop
 	Loop();
 }
 
@@ -47,10 +48,9 @@ void Game::Loop(){
 
 	while (Ventana->isOpen()) {
 		
-		//dir = { 0.f, 0.f };
+		dir = { 0.f, 0.f };
 
-		
-		//procesarEventosTeclado();
+		procesarEventosTeclado();
 		Cerrar();
 		Dibujar();
 		 
@@ -71,8 +71,7 @@ void Game::Cerrar() {
 
 void Game::procesarEventosTeclado()
 {
-	
-
+	 
 	// get dt
 	float dt;
 	{
