@@ -9,7 +9,15 @@ class Game {
 private:
 
 	RenderWindow* Ventana;
+
+
 	int fps = 60;
+
+
+	//Como vamos a estar trabajando con bounds, entonces mejor tener un valor fijo de las ventanas para usarlos como referencias, hice unas funciones Get para esto.
+	const int ancho = 800;
+	const int alto = 900;
+
 
 	// Nave
 	Nave* nave;
@@ -31,12 +39,14 @@ private:
 	std::chrono::steady_clock::time_point tp;
 
 public:
-	Game(int ancho, int alto);
+	Game();
 	void Dibujar();
 	void Loop();
 	void Cerrar();
 	void procesarEventosTeclado();
 
-
+	//Funciones para el tamaño de la ventana
+	int GetAncho();
+	int GetAlto();
 
 };
