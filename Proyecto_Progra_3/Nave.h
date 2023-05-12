@@ -3,48 +3,21 @@
 
 using namespace sf;
 
-
-class Animation
-{
-public:
-	Animation(int x, int y, int width, int height);
-	Animation() = default;
-
-	void ApplyToSprite(Sprite& s) const;
-
-	void Update(float dt);
-
-private:
-	void Advance();
-
-private:
-	static constexpr int nFrames = 3;
-	static constexpr float holdTime = 0.1f;
-	Texture textura;
-
-	// Los frames los guardamos en un arreglo de rectangulos para que su manipulacion sea mas sencilla
-	IntRect frames[nFrames];
-	// Representa el frame que esta actualmente
-	int iFrame;
-
-	float time;
-
-
-};
-
 class Nave
 {	
 private:
 	Vector2f pos;
 	Vector2f vel;
 
-	static  constexpr float speed = 150.0f;
+	static  constexpr float speed = 200.0f;
 
 	Texture* textura;
 	Sprite* spr;
 
 	IntRect frames[3];
 
+	IntRect movimientos[3];
+	int iFrame;
 	enum class AnimationIndex
 	{
 		LeftMov,
@@ -53,7 +26,6 @@ private:
 		Count
 	};
 
-	Animation animations = Animation(0,0,16,16);
 	AnimationIndex curAnimation = AnimationIndex::RighMov;
 
 
@@ -64,6 +36,7 @@ public:
 	void Draw(RenderTarget& rt) const;  
 	void SetDireccion(const Vector2f& dir);
 	void Update(float dt);
+	Vector2f getPos();
 
 
 };

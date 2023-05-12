@@ -11,9 +11,6 @@ private:
 	RenderWindow* Ventana;
 
 
-	int fps = 60;
-
-
 	//Como vamos a estar trabajando con bounds, entonces mejor tener un valor fijo de las ventanas para usarlos como referencias, hice unas funciones Get para esto.
 	const int ancho = 800;
 	const int alto = 900;

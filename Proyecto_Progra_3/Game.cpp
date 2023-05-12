@@ -6,13 +6,9 @@ using namespace std;
 Game::Game() {
 	 
 	// Para la ventana
-
-	fps = 60;
-	
 	
 
 	Ventana = new RenderWindow(VideoMode(ancho, alto), "titulo");
-	Ventana->setFramerateLimit(fps);
 
 	Vector2f pos_centro = { Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f };
 
@@ -21,19 +17,6 @@ Game::Game() {
 
 	// Todo para la nave
 
-	int x, y, dx, dy;
-
-	int indiceX, indiceY;
-
-	tex_nave = new Texture();
-	spr_nave = new Sprite();
-
-	tex_nave->loadFromFile("Assets\\Mini Pixel Pack 3\\Player ship\\Player_ship.png");
-
-	spr_nave->setTexture(*tex_nave);
-	spr_nave->setPosition(Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f);
-	spr_nave->setTextureRect({ 16,0,16,16 });
-	
 	eventos_1 = new Event();
 
 
@@ -91,10 +74,9 @@ void Game::procesarEventosTeclado()
 		tp = new_tp;
 	}
 
-	
+	// handle input
 
 	while (Ventana->pollEvent(*eventos_1)) {
-
 		switch (eventos_1->type)
 		{
 		case Event::Closed:
@@ -108,26 +90,25 @@ void Game::procesarEventosTeclado()
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Right))
 			{
-				dir.x += 1.f; 
+				dir.x += 1.0f; 
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Left))
 			{
-				dir.x -= 1.f;
+				dir.x -= 1.0f;
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Up))
 			{
-				dir.y -= 1.f;
+				dir.y -= 1.0f;
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Down))
 			{
-				dir.y += 1.f;
+				dir.y += 1.0f;
 			}
 
 			nave->SetDireccion(dir);
 
 			// update model
 			nave->Update(dt);
-
 
 			break;
 
