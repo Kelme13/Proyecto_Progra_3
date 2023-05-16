@@ -3,11 +3,14 @@
 #include <chrono>
 #include "Nave.h"
 #include "Background.h"
+#include "Game.h"
 
 using namespace std;
 using namespace sf;
 
 int main() {
+
+    //Game* juego = new Game();
 
 
     sf::RenderWindow window(sf::VideoMode(800, 900), "SFML window");

@@ -4,10 +4,11 @@
 using namespace sf;
 
 class Nave
-{	
+{
 private:
 	Vector2f pos;
 	Vector2f vel;
+	CircleShape hitbox;
 
 	static  constexpr float speed = 200.0f;
 
@@ -32,7 +33,7 @@ private:
 public:
 	Nave(Vector2f& pos_a);
 	~Nave();
-
+	void ShowHitbox(RenderTarget& rt) const;
 	void Draw(RenderTarget& rt) const;  
 	void SetDireccion(const Vector2f& dir);
 	void Update(float dt);
