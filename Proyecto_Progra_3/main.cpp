@@ -18,7 +18,7 @@ int main() {
     Nave* nave = new Nave(pos_centro);
 
 
-    Background* BG = new Background("Assets\\Backgrounds\\Dynamic\\Nebula Blue.png", "Assets\\Backgrounds\\Dynamic\\EstrellaTipo1.png");
+    Background* BG = new Background("Assets\\Backgrounds\\Dynamic\\Nebula Blue.png", "Assets\\Backgrounds\\Dynamic\\EstrellaTipo4.png");
 
     // timepoint for delta time measurment
     std::chrono::steady_clock::time_point tp = std::chrono::steady_clock::now();
@@ -60,6 +60,14 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
             dir.x -= 1.0f;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+        {
+            nave->Miniatura();
+        }
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+        {
+            nave->Normal();
         }
 
         nave->SetDireccion(dir);

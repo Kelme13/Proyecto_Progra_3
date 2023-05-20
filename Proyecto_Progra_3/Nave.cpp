@@ -2,7 +2,13 @@
 #include <iostream>
 
 
+class booster {
+private:
 
+		
+
+
+};
 
 // Para la clase nave
 Nave::Nave(Vector2f& pos_a)
@@ -57,3 +63,16 @@ void Nave::Draw(RenderTarget& rt) const
 {
 	rt.draw(*spr);
 }
+
+void Nave::Miniatura() {
+
+	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
+
+}
+
+void Nave::Normal()
+{
+	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
+
+}
+

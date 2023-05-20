@@ -16,7 +16,6 @@ private:
 	int ancho;
 	int alto;
 	
-
 	//Para las estrellas
 	sf::Texture* Estrella;
     sf::Sprite* Star;

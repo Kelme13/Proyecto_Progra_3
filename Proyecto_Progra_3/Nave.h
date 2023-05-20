@@ -36,6 +36,8 @@ public:
 	void Draw(RenderTarget& rt) const;  
 	void SetDireccion(const Vector2f& dir);
 	void Update(float dt);
+	void Miniatura();
+	void Normal();
 	Vector2f getPos();
 
 
