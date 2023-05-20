@@ -13,6 +13,8 @@ private:
 // Para la clase nave
 Nave::Nave(Vector2f& pos_a)
 {
+	hitbox.setRadius(15);
+	hitbox.setFillColor(Color::Red);
 
 	textura = new Texture();
 	textura->loadFromFile("Assets\\Mini Pixel Pack 3\\Player ship\\Player_ship.png");
@@ -21,6 +23,7 @@ Nave::Nave(Vector2f& pos_a)
 	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 	spr->setTextureRect({ 16, 0, 16, 16 });
 	spr->setPosition(pos_a);
+	hitbox.setPosition(pos_a);
 	vel = { 0.f, 0.f };
 	pos = pos_a;
 
@@ -56,6 +59,7 @@ void Nave::Update(float dt)
 	pos += vel * dt;
 	std::cout<<  "x: " << pos.x << "y: " << pos.y << std::endl;
 	spr->setPosition(pos);
+	hitbox.setPosition(pos);
 }
 
 
@@ -63,16 +67,3 @@ void Nave::Draw(RenderTarget& rt) const
 {
 	rt.draw(*spr);
 }
-
-void Nave::Miniatura() {
-
-	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
-
-}
-
-void Nave::Normal()
-{
-	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
-
-}
-

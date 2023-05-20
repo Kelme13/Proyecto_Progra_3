@@ -8,7 +8,7 @@ Game::Game() {
 	// Para la ventana
 	
 
-	Ventana = new RenderWindow(VideoMode(ancho, alto), "titulo");
+	Ventana = new RenderWindow(VideoMode(ancho, alto), "Space Shooter");
 
 	Vector2f pos_centro = { Ventana->getSize().x / 2.f, Ventana->getSize().y - 100.f };
 
@@ -25,6 +25,7 @@ Game::Game() {
 
 	// inicia el loop
 	Loop();
+
 }
 
 
@@ -37,15 +38,16 @@ int Game::GetAlto() {
 	return alto;
 }
 
+
+
 void Game::Loop(){
 
 
 	while (Ventana->isOpen()) {
 		
-		dir = { 0.f, 0.f };
-
+		
+	
 		procesarEventosTeclado();
-		Cerrar();
 		Dibujar();
 		 
 	}
@@ -75,7 +77,7 @@ void Game::procesarEventosTeclado()
 	}
 
 	// handle input
-
+	dir = { 0.f, 0.f };
 	while (Ventana->pollEvent(*eventos_1)) {
 		switch (eventos_1->type)
 		{
@@ -90,19 +92,41 @@ void Game::procesarEventosTeclado()
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Right))
 			{
-				dir.x += 1.0f; 
+				if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+					dir.x += 1.0f;
+				}
+				else {
+					dir.x += 3.0f;
+				}
+				
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Left))
 			{
-				dir.x -= 1.0f;
+				if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+					dir.x -= 1.0f;
+				}
+				else {
+					dir.x -= 3.0f;
+				}
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Up))
 			{
-				dir.y -= 1.0f;
+				if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+					dir.y -= 1.0f;
+				}
+				else {
+					dir.y -= 3.0f;
+				}
 			}
 			else if (Keyboard::isKeyPressed(Keyboard::Down))
 			{
-				dir.y += 1.0f;
+				if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+					dir.y += 1.0f;
+				}
+				else {
+					dir.y += 3.0f;
+				}
+				
 			}
 
 			nave->SetDireccion(dir);
@@ -125,6 +149,11 @@ void Game::Dibujar() {
 	BG->Draw(*Ventana);
 	nave->Draw(*Ventana);
 	
+	if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+		nave->ShowHitbox(*Ventana);
+	}
+
+
 	Ventana->display();
 
 }
