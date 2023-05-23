@@ -2,20 +2,13 @@
 #include <iostream>
 
 
-class booster {
-private:
-
-		
-
-
-};
-
 // Para la clase nave
 Nave::Nave(Vector2f& pos_a)
 {
 	hitbox.setRadius(15);
 	hitbox.setFillColor(Color::Red);
 
+	// texturas para la nave
 	textura = new Texture();
 	textura->loadFromFile("Assets\\Mini Pixel Pack 3\\Player ship\\Player_ship.png");
 
@@ -33,6 +26,14 @@ Nave::Nave(Vector2f& pos_a)
 	}
 	
 	iFrame = 1;
+
+
+	// texturas y spr para los booster
+
+	animaciones[0] = Animation_Booster("Assets\\Mini Pixel Pack 3\\Player ship\\Boosters.png");
+	animaciones[1] = Animation_Booster("Assets\\Mini Pixel Pack 3\\Player ship\\Boosters_right.png");
+	animaciones[2] = Animation_Booster("Assets\\Mini Pixel Pack 3\\Player ship\\Boosters_left.png");
+
 }
 
 void Nave::SetDireccion(const Vector2f& dir)
@@ -42,14 +43,17 @@ void Nave::SetDireccion(const Vector2f& dir)
 	if (dir.x < 0.f)
 	{
 		iFrame = 0;
+		iFrame_booster = 2;
 	}
 	else if (dir.x > 0.f)
 	{
 		iFrame = 2;
+		iFrame_booster = 1;
 	}
 	else if (dir.x == 0)
 	{
 		iFrame = 1;
+		iFrame_booster = 0;
 	}
 }
 
@@ -82,7 +86,12 @@ void Nave::Update(float dt)
 
 
 	std::cout<<  "x: " << pos.x << "y: " << pos.y << std::endl;
+	
 	spr->setPosition(pos);
+	animaciones[iFrame_booster].Update(dt);
+	animaciones[iFrame_booster].ApplyToSprite(spr_booster);
+	spr_booster.setPosition({pos.x, pos.y + 46});
+	spr_booster.setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 	hitbox.setPosition(pos);
 }
 
@@ -91,6 +100,7 @@ void Nave::Draw(RenderTarget& rt) const
 {	
 
 	rt.draw(*spr);
+	rt.draw(spr_booster);
 }
 
 
@@ -103,7 +113,6 @@ void Nave::Miniatura() {
 void Nave::Normal()
 {
 	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
-
 }
 
 Vector2f Nave::getPos()
