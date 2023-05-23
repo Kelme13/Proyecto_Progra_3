@@ -72,6 +72,7 @@ int main() {
         {
             nave->Normal();
         }
+  
 
         nave->SetDireccion(dir);
 

@@ -57,6 +57,30 @@ void Nave::Update(float dt)
 {
 	spr->setTextureRect(movimientos[iFrame]);
 	pos += vel * dt;
+
+	// validaciones para que no se escape de la pantalla en x
+	if (pos.x <= 4.f)
+	{
+		pos.x = 4.f;
+	}
+	else if (pos.x > 757.f)
+	{
+		pos.x = 757.f;
+	}
+
+	// validaciones para que no se escape de la pantalla en y
+
+	if (pos.y <= 0.5f)
+	{
+		pos.y = 0.5f;
+	}
+	
+	else if (pos.y >= 851.5f)
+	{
+		pos.y = 851.5f;
+	}
+
+
 	std::cout<<  "x: " << pos.x << "y: " << pos.y << std::endl;
 	spr->setPosition(pos);
 	hitbox.setPosition(pos);
@@ -64,6 +88,31 @@ void Nave::Update(float dt)
 
 
 void Nave::Draw(RenderTarget& rt) const
-{
+{	
+
 	rt.draw(*spr);
 }
+
+
+void Nave::Miniatura() {
+
+	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
+
+}
+
+void Nave::Normal()
+{
+	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
+
+}
+
+Vector2f Nave::getPos()
+{
+	return spr->getPosition();
+}
+
+
+void Nave::ShowHitbox(RenderTarget& rt) const {
+	rt.draw(hitbox);
+}
+
