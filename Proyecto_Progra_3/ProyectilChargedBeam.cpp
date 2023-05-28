@@ -1,6 +1,6 @@
-#include "Proyectil_beam.h"
+#include "ProyectilChargedBeam.h"
 
-Proyectil_beam::Proyectil_beam(Vector2f pos_i)
+ProyectilChargedBeam::ProyectilChargedBeam(Vector2f pos_i)
 {
 	pos = pos_i;
 	m_remaing_live = bullet_live_seconds;
@@ -12,15 +12,13 @@ Proyectil_beam::Proyectil_beam(Vector2f pos_i)
 	spr.setTexture(textura);
 }
 
-void Proyectil_beam::Draw(RenderTarget& rt) const
+void ProyectilChargedBeam::Draw(RenderTarget& rt) const
 {
 	rt.draw(spr);
-
 }
 
-void Proyectil_beam::Update(float dt)
+void ProyectilChargedBeam::Update(float dt)
 {
-
 	if (!m_is_alive) return;
 
 	m_remaing_live -= dt;
@@ -28,14 +26,18 @@ void Proyectil_beam::Update(float dt)
 	if (m_remaing_live < 0) m_is_alive = false;
 
 	Vector2f tp = { 0.f, -1.f };
-	vel =  tp * bullet_speed;
+	vel = tp * bullet_speed;
 	pos += vel * dt;
 
+	animaciones.Update(dt);
+	animaciones.ApplyToSprite(spr);
+
 	spr.setPosition(pos);
-	spr.setScale(30.f / (float)spr.getTexture()->getSize().x, 30.f / (float)spr.getTexture()->getSize().y);
+	spr.setScale(50.f / (float)spr.getTexture()->getSize().x, 50.f / (float)spr.getTexture()->getSize().y);
+
 }
 
-bool Proyectil_beam::isAlive()
+bool ProyectilChargedBeam::isAlive()
 {
 	return m_is_alive;
 }
