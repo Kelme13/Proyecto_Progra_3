@@ -72,8 +72,8 @@ int main() {
         {
             nave->Normal();
         }
-  
-
+       
+      
         nave->SetDireccion(dir);
 
         // update lulu
@@ -85,6 +85,15 @@ int main() {
         BG->Draw(window);
         nave->Draw(window);
         
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+        {
+            nave->ShowHitbox(window);
+            
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+        {
+            nave->disparar(window);
+        }
         // Update the window
         window.display();
     }

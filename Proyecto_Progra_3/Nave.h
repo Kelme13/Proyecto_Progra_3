@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "Proyectil_beam.h"
 
 using namespace sf;
 
@@ -8,6 +9,11 @@ class Animation_Booster
 {
 public:
 
+	/*
+	* Ya que cada texture tiene 2 frames en 'x', y una solo fila, 'y' siempre es cero;
+	* pero avanza en 'x' 16 pix;
+
+	*/
 	Animation_Booster() = default;
 
 	Animation_Booster(String tx)
@@ -23,7 +29,6 @@ public:
 	{
 		s.setTexture(texture);
 		s.setTextureRect(frames[iframe]);
-		//s.setScale(130.f / (float)s.getTexture()->getSize().x, 50.f / (float)s.getTexture()->getSize().y);
 	}
 
 
@@ -47,7 +52,7 @@ private:
 		}
 	}
 	static constexpr int nFrames = 2;
-	static constexpr float holdTime = 0.1f;
+	static constexpr float holdTime = 0.08f;
 	sf::Texture texture;
 	sf::IntRect frames[nFrames];
 	int iframe = 0;
@@ -61,7 +66,6 @@ private:
 	Vector2f pos;
 	Vector2f vel;
 	CircleShape hitbox;
-	
 	/*
 	* componeste de la animacion boosters
 	Arreglos que indican los siguiente:
@@ -78,7 +82,7 @@ private:
 	/*
 	Componentes de la nave y generales
 	*/
-	static  constexpr float speed = 200.0f;
+	float speed = 200.0f;
 
 	Texture* textura;
 	Sprite* spr;
@@ -104,6 +108,8 @@ public:
 	void Update(float dt);
 	void Miniatura();
 	void Normal();
+
+	void disparar(RenderTarget& rt) const;
 	Vector2f getPos();
 
 

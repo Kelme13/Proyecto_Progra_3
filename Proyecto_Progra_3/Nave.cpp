@@ -5,7 +5,7 @@
 // Para la clase nave
 Nave::Nave(Vector2f& pos_a)
 {
-	hitbox.setRadius(15);
+	hitbox.setRadius(8);
 	hitbox.setFillColor(Color::Red);
 
 	// texturas para la nave
@@ -16,7 +16,7 @@ Nave::Nave(Vector2f& pos_a)
 	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 	spr->setTextureRect({ 16, 0, 16, 16 });
 	spr->setPosition(pos_a);
-	hitbox.setPosition(pos_a);
+	hitbox.setPosition({pos_a.x + 8, pos_a.y + 8});
 	vel = { 0.f, 0.f };
 	pos = pos_a;
 
@@ -90,9 +90,9 @@ void Nave::Update(float dt)
 	spr->setPosition(pos);
 	animaciones[iFrame_booster].Update(dt);
 	animaciones[iFrame_booster].ApplyToSprite(spr_booster);
-	spr_booster.setPosition({pos.x, pos.y + 46});
-	spr_booster.setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
-	hitbox.setPosition(pos);
+	
+
+	hitbox.setPosition({ pos.x + 14, pos.y + 18 });
 }
 
 
@@ -107,11 +107,17 @@ void Nave::Draw(RenderTarget& rt) const
 void Nave::Miniatura() {
 
 	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
-
+	spr_booster.setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
+	spr_booster.setPosition({ pos.x, pos.y + 26});
+	
+	speed = 200.f + 70.f;
 }
 
 void Nave::Normal()
 {
+	speed = 200.f;
+	spr_booster.setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
+	spr_booster.setPosition({ pos.x, pos.y + 46 });
 	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 }
 
@@ -123,5 +129,12 @@ Vector2f Nave::getPos()
 
 void Nave::ShowHitbox(RenderTarget& rt) const {
 	rt.draw(hitbox);
+}
+
+void Nave::disparar(RenderTarget& rt) const
+{
+	Proyectil_beam* x = new Proyectil_beam(pos);
+	x->Update();
+	x->Draw(rt);
 }
 
