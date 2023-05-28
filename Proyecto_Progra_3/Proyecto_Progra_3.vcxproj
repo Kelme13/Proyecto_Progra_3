@@ -137,12 +137,14 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Nave.cpp" />
+    <ClCompile Include="ProyectilChargedBeam.cpp" />
     <ClCompile Include="Proyectil_beam.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Nave.h" />
+    <ClInclude Include="ProyectilChargedBeam.h" />
     <ClInclude Include="Proyectil_beam.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

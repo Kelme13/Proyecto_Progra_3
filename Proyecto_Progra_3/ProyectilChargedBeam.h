@@ -1,15 +1,8 @@
-#pragma once
 #include "SFML/Graphics.hpp"
-#include <chrono>
-
+#include "Proyectil_beam.h"
 using namespace sf;
 
-
-const float bullet_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
-const float bullet_speed = 500.0f;    //Velocidad de la bala en pixel / segundo
-const float bullet_shoot_speed_seconds = 0.2f; // Frecuencia de disparos
-
-class Animation_Beam
+class Animation_ChargedBeam
 {
 public:
 
@@ -19,12 +12,12 @@ public:
 
 	*/
 
-	Animation_Beam()
+	Animation_ChargedBeam()
 	{
-		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_beam (16 x 16).png");
+		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_charged_beam (16 x 16).png");
 		for (int i = 0; i < nFrames; i++)
 		{
-			frames[i] = { 8 * i, 0, 8, 16 };
+			frames[i] = { 16 * i, 0, 16, 16 };
 		}
 	}
 
@@ -63,11 +56,11 @@ private:
 };
 
 
-class Proyectil_beam
+
+class ProyectilChargedBeam
 {
 public:
-
-	Proyectil_beam(Vector2f pos_i);
+	ProyectilChargedBeam(Vector2f pos_i);
 
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
@@ -83,6 +76,6 @@ private:
 	sf::Texture textura;
 	sf::Sprite spr;
 
-
+	Animation_ChargedBeam animaciones;
 };
 
