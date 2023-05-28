@@ -1,12 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <chrono>
+
+#include <list>
+
 #include "Nave.h"
 #include "Background.h"
+#include "Proyectil_beam.h"
 #include "Game.h"
+
 
 using namespace std;
 using namespace sf;
+
+
+//A - Definiciones para mejor comprension del codigo
+typedef list<Proyectil_beam*> BulletList;
+typedef list<Proyectil_beam*>::iterator BulletIndex;
 
 int main() {
 
@@ -26,6 +36,11 @@ int main() {
     // timepoint for delta time measurment
     std::chrono::steady_clock::time_point tp = std::chrono::steady_clock::now();
 
+    //A - Contenedor de todas las balas disparadas
+    BulletList bullets;
+    float time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo
+
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -44,6 +59,24 @@ int main() {
             const auto new_tp = std::chrono::steady_clock::now();
             dt = std::chrono::duration<float>(new_tp - tp).count();
             tp = new_tp;
+        }
+
+        //A - Rutina de disparo cuando se pulsa espacion & se puede disparar
+        time_to_next_bullet -= dt;
+        if (Keyboard::isKeyPressed(sf::Keyboard::Space) && time_to_next_bullet < 0.0f)
+        {
+            time_to_next_bullet = bullet_shoot_speed_seconds; // reseteamos la frecuencia del disparo
+
+            // Calculamos la posicion de la bala
+            sf::Vector2f posicion = nave->getPos();
+
+            // movemos la posicion de la bala hasta la punta de la nave;
+            posicion = { posicion.x , posicion.y - 25 };
+
+            // Creamos la bala y la almacenamos
+            Proyectil_beam* newBeam = new Proyectil_beam(posicion);
+            if (newBeam) bullets.push_back(newBeam);
+
         }
 
         // handle input
@@ -76,11 +109,33 @@ int main() {
       
         nave->SetDireccion(dir);
 
-        // update lulu
+        // update nave
         nave->Update(dt);
+
+
+        // A - Actualizmos las balas
+        BulletIndex I = bullets.begin();
+        BulletIndex E = bullets.end();
+        while (I != E)
+        {
+            Proyectil_beam* beam = (*I);
+
+            if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
+            {
+                beam->Update(dt);
+                ++I;
+            }
+            else // Si la bala ha muerto se elimina y se pasa a la siguiente
+            {
+                delete beam;
+                I = bullets.erase(I);
+            }
+        };
+
 
         // Clear screen
         window.clear();
+
         // Draw the sprite
         BG->Draw(window);
         nave->Draw(window);
@@ -88,12 +143,21 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
         {
             nave->ShowHitbox(window);
-            
+                
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+
+        // A - Recorremos la lista de balas y las dibujamos
+        I = bullets.begin();
+        E = bullets.end();
+
+        while (I != E)
         {
-            nave->disparar(window);
+            Proyectil_beam* beam = (*I);
+
+            beam->Draw(window);
+            ++I;
         }
+
         // Update the window
         window.display();
     }

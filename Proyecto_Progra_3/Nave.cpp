@@ -131,10 +131,4 @@ void Nave::ShowHitbox(RenderTarget& rt) const {
 	rt.draw(hitbox);
 }
 
-void Nave::disparar(RenderTarget& rt) const
-{
-	Proyectil_beam* x = new Proyectil_beam(pos);
-	x->Update();
-	x->Draw(rt);
-}
 

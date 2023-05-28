@@ -67,7 +67,7 @@ private:
 	Vector2f vel;
 	CircleShape hitbox;
 	/*
-	* componeste de la animacion boosters
+	* componente de la animacion boosters
 	Arreglos que indican los siguiente:
 	0 - booster center
 	1 - booster right
@@ -109,7 +109,6 @@ public:
 	void Miniatura();
 	void Normal();
 
-	void disparar(RenderTarget& rt) const;
 	Vector2f getPos();
 
 
