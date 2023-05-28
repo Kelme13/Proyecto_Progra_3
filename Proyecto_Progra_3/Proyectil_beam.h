@@ -6,8 +6,8 @@ using namespace sf;
 
 
 const float bullet_live_seconds = 4.0f;   //Vida maxima de una bala es segundos
-const float bullet_speed = 70.0f;    //Velocidad de la bala en pixel / segundo
-const float bullet_shoot_speed_seconds = 0.5f; // Frecuencia de disparos
+const float bullet_speed = 500.0f;    //Velocidad de la bala en pixel / segundo
+const float bullet_shoot_speed_seconds = 0.2f; // Frecuencia de disparos
 
 class Animation_Beam
 {
@@ -21,7 +21,7 @@ public:
 
 	Animation_Beam()
 	{
-		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_charged_beam (16 x 16).png");
+		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_beam (16 x 16).png");
 		for (int i = 0; i < nFrames; i++)
 		{
 			frames[i] = { 8 * i, 0, 8, 16 };
@@ -82,8 +82,6 @@ private:
 
 	sf::Texture textura;
 	sf::Sprite spr;
-	Animation_Beam animaciones;
-
 
 
 };

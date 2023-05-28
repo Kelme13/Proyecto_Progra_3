@@ -8,6 +8,8 @@ Proyectil_beam::Proyectil_beam(Vector2f pos_i)
 	spr.setPosition(pos);
 
 	vel = { 0.f, 0.f };
+	textura.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_beam (16 x 16).png");
+	spr.setTexture(textura);
 }
 
 void Proyectil_beam::Draw(RenderTarget& rt) const
@@ -29,10 +31,8 @@ void Proyectil_beam::Update(float dt)
 	vel =  tp * bullet_speed;
 	pos += vel * dt;
 
-	animaciones.Update(dt);
-	animaciones.ApplyToSprite(spr);
-
 	spr.setPosition(pos);
+	spr.setScale(30.f / (float)spr.getTexture()->getSize().x, 30.f / (float)spr.getTexture()->getSize().y);
 }
 
 bool Proyectil_beam::isAlive()

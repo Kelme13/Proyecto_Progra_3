@@ -115,10 +115,10 @@ void Nave::Miniatura() {
 
 void Nave::Normal()
 {
-	speed = 200.f;
-	spr_booster.setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
+	speed = 300.f;
+	spr_booster.setScale(110.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 	spr_booster.setPosition({ pos.x, pos.y + 46 });
-	spr->setScale(130.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
+	spr->setScale(110.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 }
 
 Vector2f Nave::getPos()

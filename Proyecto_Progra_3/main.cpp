@@ -71,7 +71,7 @@ int main() {
             sf::Vector2f posicion = nave->getPos();
 
             // movemos la posicion de la bala hasta la punta de la nave;
-            posicion = { posicion.x , posicion.y - 25 };
+            posicion = { posicion.x + 3 , posicion.y - 20 };
 
             // Creamos la bala y la almacenamos
             Proyectil_beam* newBeam = new Proyectil_beam(posicion);

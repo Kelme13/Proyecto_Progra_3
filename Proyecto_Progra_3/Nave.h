@@ -82,7 +82,7 @@ private:
 	/*
 	Componentes de la nave y generales
 	*/
-	float speed = 200.0f;
+	float speed = 350.0f;
 
 	Texture* textura;
 	Sprite* spr;
