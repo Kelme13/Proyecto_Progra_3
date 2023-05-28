@@ -5,9 +5,9 @@
 using namespace sf;
 
 
-const float bullet_live_seconds = 4.0f;   //Vida maxima de una bala es segundos
-const float bullet_speed = 70.0f;    //Velocidad de la bala en pixel / segundo
-const float bullet_shoot_speed_seconds = 0.5f; // Frecuencia de disparos
+const float bullet_live_seconds = 5.0f;   //Vida maxima de una bala es segundos
+const float bullet_speed = 300.0f;    //Velocidad de la bala en pixel / segundo
+const float bullet_shoot_speed_seconds = 0.2f; // Frecuencia de disparos
 
 class Animation_Beam
 {
@@ -72,6 +72,11 @@ public:
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
 	bool isAlive();
+
+	sf::FloatRect getBounds() const
+	{
+		return spr.getGlobalBounds();
+	}
 
 private:
 	Vector2f pos;
