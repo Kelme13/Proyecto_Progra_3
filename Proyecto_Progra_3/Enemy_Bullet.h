@@ -5,13 +5,13 @@
 using namespace sf;
 
 
-const float bullet_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
-const float bullet_speed = 500.0f;    //Velocidad de la bala en pixel / segundo
-const float bullet_shoot_speed_seconds = 0.2f; // Frecuencia de disparos
-const float bullet_daño = 50.f;
+const float bulletEnemy_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
+const float bulletEnemy_speed = 500.0f;    //Velocidad de la bala en pixel / segundo
+const float bulletEnemy_shoot_speed_seconds = 0.2f; // Frecuencia de disparos
+const float bulletEnemy_daño = 50.f;
 
 
-class Animation_Beam
+class Animation_BulletEnemy
 {
 public:
 
@@ -21,9 +21,9 @@ public:
 
 	*/
 
-	Animation_Beam()
+	Animation_BulletEnemy()
 	{
-		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_beam (16 x 16).png");
+		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Enemy_projectile (16 x 16).png");
 		for (int i = 0; i < nFrames; i++)
 		{
 			frames[i] = { 8 * i, 0, 8, 16 };
@@ -65,20 +65,17 @@ private:
 };
 
 
-class Proyectil_beam
+
+class Enemy_Bullet
 {
 public:
 
-	Proyectil_beam(Vector2f pos_i);
+public:
+	Enemy_Bullet(Vector2f pos_i);
 
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
 	bool isAlive();
-
-	sf::FloatRect getBounds() const
-	{
-		return spr.getGlobalBounds();
-	}
 
 private:
 	Vector2f pos;
@@ -90,6 +87,7 @@ private:
 	sf::Texture textura;
 	sf::Sprite spr;
 
-
+	Animation_BulletEnemy animaciones;
 };
+
 

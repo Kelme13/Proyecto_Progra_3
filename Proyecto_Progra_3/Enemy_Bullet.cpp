@@ -1,9 +1,9 @@
-#include "ProyectilChargedBeam.h"
+#include "Enemy_Bullet.h"
 
-ProyectilChargedBeam::ProyectilChargedBeam(Vector2f pos_i)
+Enemy_Bullet::Enemy_Bullet(Vector2f pos_i)
 {
 	pos = pos_i;
-	m_remaing_live = beamCharged_live_seconds;
+	m_remaing_live = bulletEnemy_live_seconds;
 	m_is_alive = true;
 	spr.setPosition(pos);
 
@@ -12,12 +12,12 @@ ProyectilChargedBeam::ProyectilChargedBeam(Vector2f pos_i)
 	spr.setTexture(textura);
 }
 
-void ProyectilChargedBeam::Draw(RenderTarget& rt) const
+void Enemy_Bullet::Draw(RenderTarget& rt) const
 {
 	rt.draw(spr);
 }
 
-void ProyectilChargedBeam::Update(float dt)
+void Enemy_Bullet::Update(float dt)
 {
 	if (!m_is_alive) return;
 
@@ -25,8 +25,8 @@ void ProyectilChargedBeam::Update(float dt)
 
 	if (m_remaing_live < 0) m_is_alive = false;
 
-	Vector2f tp = { 0.f, -1.f };
-	vel = tp * beamCharged_speed;
+	Vector2f tp = { 0.f, +1.f };
+	vel = tp * bulletEnemy_speed;
 	pos += vel * dt;
 
 	animaciones.Update(dt);
@@ -37,22 +37,7 @@ void ProyectilChargedBeam::Update(float dt)
 
 }
 
-sf::Sprite ProyectilChargedBeam::getSprite()
-{
-	return this->spr;
-}
-
-bool ProyectilChargedBeam::isAlive()
+bool Enemy_Bullet::isAlive()
 {
 	return m_is_alive;
-}
-
-void ProyectilChargedBeam::kill()
-{
-	m_is_alive = false;	
-}
-
-sf::FloatRect ProyectilChargedBeam::getBounds() const
-{
-	return spr.getGlobalBounds();
 }

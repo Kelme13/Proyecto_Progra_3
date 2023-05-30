@@ -56,10 +56,10 @@ private:
 };
 
 
-const float beamCharged_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
-const float beamCharged_speed = 400.0f;    //Velocidad de la bala en pixel / segundo
+const float beamCharged_live_seconds = 3.0f;   //Vida maxima de una bala es segundos
+const float beamCharged_speed = 300.0f;    //Velocidad de la bala en pixel / segundo
 const float beamCharged_shoot_speed_seconds = 0.4f; // Frecuencia de disparos
-
+const int beamCharged_daño = 100;
 
 class ProyectilChargedBeam
 {
@@ -68,7 +68,12 @@ public:
 
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
+
+	sf::Sprite getSprite();
 	bool isAlive();
+	void kill();
+
+	sf::FloatRect getBounds() const;
 
 private:
 	Vector2f pos;

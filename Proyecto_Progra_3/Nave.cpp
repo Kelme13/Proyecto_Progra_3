@@ -84,9 +84,6 @@ void Nave::Update(float dt)
 		pos.y = 851.5f;
 	}
 
-
-	std::cout<<  "x: " << pos.x << "y: " << pos.y << std::endl;
-	
 	spr->setPosition(pos);
 	animaciones[iFrame_booster].Update(dt);
 	animaciones[iFrame_booster].ApplyToSprite(spr_booster);
@@ -106,11 +103,11 @@ void Nave::Draw(RenderTarget& rt) const
 
 void Nave::Miniatura() {
 
-	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
-	spr_booster.setScale(100.f / (float)spr->getTexture()->getSize().x, 30.f / (float)spr->getTexture()->getSize().y);
-	spr_booster.setPosition({ pos.x, pos.y + 26});
+	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 40.f / (float)spr->getTexture()->getSize().y);
+	spr_booster.setScale(100.f / (float)spr->getTexture()->getSize().x, 40.f / (float)spr->getTexture()->getSize().y);
+	spr_booster.setPosition({ pos.x, pos.y + 36});
 	
-	speed = 200.f + 70.f;
+	speed = 300.f + 70.f;
 }
 
 void Nave::Normal()
