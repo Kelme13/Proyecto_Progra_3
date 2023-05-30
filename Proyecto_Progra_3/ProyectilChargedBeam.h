@@ -82,6 +82,7 @@ private:
 
 	float m_remaing_live;
 	bool m_is_alive;
+	
 
 	sf::Texture textura;
 	sf::Sprite spr;

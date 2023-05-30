@@ -8,6 +8,8 @@ Enemy::Enemy(int hp, Vector2f pos)
 	this->Pos = pos;
 	enemyAlive = true;
 
+	Speed = 20.f;
+
 	spr.setTexture(texture);
 	spr.setPosition(pos);
 	spr.setScale(3, 3);
@@ -44,13 +46,21 @@ void Enemy::Update(float dt)
 
 	if (hp <= 0)
 	{
-		enemyAlive = false;
+		animaciones_explosion.Update(dt);
+		animaciones_explosion.ApplyToSprite(spr);
+
+		if (animaciones_explosion.esUltimoFrame())
+		{
+			enemyAlive = false;
+		}
+		
 	}
-
-	animaciones.Update(dt);
-	animaciones.ApplyToSprite(spr);
-
-	Speed = 20.f;
+	else
+	{
+		animaciones.Update(dt);
+		animaciones.ApplyToSprite(spr);
+	}
+		
 	spr.setScale(40.f / (float)16.f, 40.f / 16.f);
 
 	if (moviendo_impacto && time_mover_impacto > 0.f)
