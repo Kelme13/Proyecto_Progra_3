@@ -56,6 +56,10 @@ private:
 };
 
 
+const float beamCharged_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
+const float beamCharged_speed = 400.0f;    //Velocidad de la bala en pixel / segundo
+const float beamCharged_shoot_speed_seconds = 0.4f; // Frecuencia de disparos
+
 
 class ProyectilChargedBeam
 {

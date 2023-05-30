@@ -24,10 +24,17 @@ typedef list<Proyectil_beam*>::iterator BeamIndex;
 typedef list<ProyectilChargedBeam*> ChargedBeamList;
 typedef list<ProyectilChargedBeam*>::iterator ChargedBeamIndex;
 
+enum class Disparos
+{
+    Beam,
+    Charged_Beam
+};
+    
 int main() {
 
     //Game* juego = new Game();
 
+    Disparos actualDisparo = Disparos::Beam;
 
     sf::RenderWindow window(sf::VideoMode(800, 900), "SFML window");
     // Load a sprite to display
@@ -48,7 +55,8 @@ int main() {
     //B - Contenedor de todas las balas Cargadas
     ChargedBeamList chargedBeams;
 
-    float time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo
+    float time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo beam normal
+    float time_to_next_bullet_charged = 0.0f;
 
 
     // Start the game loop
@@ -73,9 +81,20 @@ int main() {
 
         //A - Rutina de disparo cuando se pulsa espacion & se puede disparar
         time_to_next_bullet -= dt;
-        if (Keyboard::isKeyPressed(sf::Keyboard::Space) && time_to_next_bullet < 0.0f)
+        time_to_next_bullet_charged -= dt;
+
+        if (Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            time_to_next_bullet = bullet_shoot_speed_seconds; // reseteamos la frecuencia del disparo
+            if (actualDisparo == Disparos::Beam)
+            {
+                actualDisparo = Disparos::Charged_Beam;
+            }
+            else
+                actualDisparo = Disparos::Beam;
+        }
+
+        if (Keyboard::isKeyPressed(sf::Keyboard::Space) )
+        {
 
             // Calculamos la posicion de la bala
             sf::Vector2f posicion = nave->getPos();
@@ -83,16 +102,24 @@ int main() {
             // movemos la posicion de la bala hasta la punta de la nave;
             posicion = { posicion.x + 3 , posicion.y - 20 };
 
-            /*
-            // Creamos la bala y la almacenamos
-            Proyectil_beam* newBeam = new Proyectil_beam(posicion);
-            if (newBeam) beams.push_back(newBeam);
 
-            */
+            if (actualDisparo == Disparos::Beam && time_to_next_bullet < 0.0f)
+            {
+                time_to_next_bullet = bullet_shoot_speed_seconds; // reseteamos la frecuencia del disparo
+                // Creamos la bala y la almacenamos
+                Proyectil_beam* newBeam = new Proyectil_beam(posicion);
+                if (newBeam) beams.push_back(newBeam);
 
-            // Creamos la bala y la almacenamos (Charged)
-            ProyectilChargedBeam* newBeam = new ProyectilChargedBeam(posicion);
-            if (newBeam) chargedBeams.push_back(newBeam);
+            }
+
+            if (actualDisparo == Disparos::Charged_Beam && time_to_next_bullet_charged < 0.0f)
+            {
+                time_to_next_bullet_charged = beamCharged_shoot_speed_seconds;
+                
+                // Creamos la bala y la almacenamos (Charged)
+                ProyectilChargedBeam* newChargedBeam = new ProyectilChargedBeam(posicion);
+                if (newChargedBeam) chargedBeams.push_back(newChargedBeam);
+            }
 
         }
 
@@ -129,8 +156,8 @@ int main() {
         // update nave
         nave->Update(dt);
 
-        /*
-        // A - Actualizmos las balas
+        
+        // A - Actualizmos las balas de los normales
         BeamIndex I = beams.begin();
         BeamIndex E = beams.end();
         while (I != E)
@@ -148,25 +175,24 @@ int main() {
                 I = beams.erase(I);
             }
         };
-        */
 
 
-        // B - Actualizmos las balas
-        ChargedBeamIndex I = chargedBeams.begin();
-        ChargedBeamIndex E = chargedBeams.end();
-        while (I != E)
+        // B - Actualizmos las balas de las cargadas
+        ChargedBeamIndex I_Charged = chargedBeams.begin();
+        ChargedBeamIndex E_Charged = chargedBeams.end();
+        while (I_Charged != E_Charged)
         {
-            ProyectilChargedBeam* beam = (*I);
+            ProyectilChargedBeam* beam = (*I_Charged);
 
             if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
             {
                 beam->Update(dt);
-                ++I;
+                ++I_Charged;
             }
             else // Si la bala ha muerto se elimina y se pasa a la siguiente
             {
                 delete beam;
-                I = chargedBeams.erase(I);
+                I_Charged = chargedBeams.erase(I_Charged);
             }
         };
 
@@ -184,16 +210,12 @@ int main() {
                 
         }
 
-        /*
+        
         // A - Recorremos la lista de balas y las dibujamos
         I = beams.begin();
         E = beams.end();
-        */
-
-        // B - recorre la lista de balas Charged
-        I = chargedBeams.begin();
-        E = chargedBeams.end();
-        /*
+        
+        
         while (I != E)
         {
             Proyectil_beam* beam = (*I);
@@ -201,14 +223,18 @@ int main() {
             beam->Draw(window);
             ++I;
         }
-        */
 
-        while (I != E)
+
+        // B - recorre la lista de balas Charged
+        I_Charged = chargedBeams.begin();
+        E_Charged = chargedBeams.end();
+
+        while (I_Charged != E_Charged)
         {
-            ProyectilChargedBeam* beam = (*I);
+            ProyectilChargedBeam* beam = (*I_Charged);
             beam->Draw(window);
 
-            ++I;
+            ++I_Charged;
         }
 
         // Update the window
