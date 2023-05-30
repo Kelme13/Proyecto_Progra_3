@@ -154,9 +154,8 @@ int main() {
                 if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
                 {
                     beam->kill();
-
-
-
+                    enem->bajarHp(beamCharged_daño);
+                    enem->moverPorImpacto();
                     break;
                 }
 

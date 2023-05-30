@@ -31,6 +31,11 @@ void Enemy::bajarHp(int daño)
 	hp -= daño;
 }
 
+void Enemy::moverPorImpacto()
+{
+	moviendo_impacto = true;
+}
+
 void Enemy::Update(float dt)
 {
 
@@ -39,6 +44,21 @@ void Enemy::Update(float dt)
 		enemyAlive = false;
 	}
 
+	animaciones.Update(dt);
+	animaciones.ApplyToSprite(spr);
+
 	Speed = 20.f;
-	spr.move(0.f, dt * Speed);
+	spr.setScale(40.f / (float)16.f, 40.f / 16.f);
+
+	if (moviendo_impacto && time_mover_impacto > 0.f)
+	{
+		spr.move(0.f, dt * -(Speed + 50));
+		time_mover_impacto -= dt;
+	}
+	else
+	{
+		moviendo_impacto = false;
+		time_mover_impacto = 0.3f;
+		spr.move(0.f, dt * Speed);
+	}
 }

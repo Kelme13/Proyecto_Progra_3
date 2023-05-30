@@ -73,6 +73,7 @@ public:
 	bool isAlive();
 	void kill();
 
+
 	sf::FloatRect getBounds() const;
 
 private:
