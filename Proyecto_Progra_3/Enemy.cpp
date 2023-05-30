@@ -4,11 +4,14 @@ Enemy::Enemy(int hp, Vector2f pos)
 {
 	this->hp = hp;
 	texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Enemies\\Alan.png");
+
 	this->Pos = pos;
 	enemyAlive = true;
 
 	spr.setTexture(texture);
 	spr.setPosition(pos);
+	spr.setScale(3, 3);
+	spr.setTextureRect({ 16, 0, 16, 16 });
 }
 
 bool Enemy::checkCollision(const sf::FloatRect& otherBounds) const
