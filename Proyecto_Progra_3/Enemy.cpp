@@ -16,11 +16,6 @@ Enemy::Enemy(int hp, Vector2f pos)
 	spr.setTextureRect({ 16, 0, 16, 16 });
 }
 
-bool Enemy::checkCollision(const sf::FloatRect& otherBounds) const
-	{
-		return spr.getGlobalBounds().intersects(otherBounds);
-	}
-
 bool Enemy::isAlive()
 {
 	return enemyAlive;
@@ -36,8 +31,9 @@ void Enemy::bajarHp(int daño)
 	hp -= daño;
 }
 
-void Enemy::moverPorImpacto()
+void Enemy::moverPorImpacto(Retardos a)
 {
+	retardo = a;
 	moviendo_impacto = true;
 }
 
@@ -65,7 +61,7 @@ void Enemy::Update(float dt)
 
 	if (moviendo_impacto && time_mover_impacto > 0.f)
 	{
-		spr.move(0.f, dt * -(Speed + 50));
+		spr.move(0.f, dt * -(Speed + (int)retardo));
 		time_mover_impacto -= dt;
 	}
 	else

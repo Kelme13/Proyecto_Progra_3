@@ -74,11 +74,8 @@ public:
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
 	bool isAlive();
-
-	sf::FloatRect getBounds() const
-	{
-		return spr.getGlobalBounds();
-	}
+	void kill();
+	sf::Sprite getSprite();
 
 private:
 	Vector2f pos;

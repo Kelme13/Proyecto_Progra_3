@@ -3,6 +3,14 @@
 
 using namespace sf;
 
+
+// Enunciado para variar entre los retardos de las balas
+enum class Retardos
+{
+	Normal = 25,
+	Potente = 90
+};
+
 class Animation_Enemy
 {
 public:
@@ -68,7 +76,7 @@ public:
 
 	Animation_Explosion()
 	{
-		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Effects\\Sparkle (16 x 16).png");
+		texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Effects\\Explosion (16 x 16).png");
 		for (int i = 0; i < nFrames; i++)
 		{	
 			frames[i] = { 16 * i, 0, 16, 16 };
@@ -105,7 +113,7 @@ private:
 			iframe = 0;
 		}
 	}
-	static constexpr int nFrames = 5;
+	static constexpr int nFrames = 6;
 	static constexpr float holdTime = 0.08f;
 	sf::Texture texture;
 	sf::IntRect frames[nFrames];
@@ -123,11 +131,12 @@ public:
 	Vector2f Pos;
 	float Speed;
 	bool enemyAlive;
+	Retardos retardo;
 
-	bool checkCollision(const sf::FloatRect& otherBounds) const;
+
 	bool isAlive();
 	void bajarHp(int daño);
-	void moverPorImpacto();
+	void moverPorImpacto(Retardos a);
 
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);

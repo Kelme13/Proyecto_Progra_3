@@ -87,7 +87,37 @@ private:
 
 
 };
-    
+
+void generarEnemigos(list<Enemy*> enemigos, int n)
+{
+
+    for (int i = 0; i < n; i++)
+    {
+        Enemy* enem = new Enemy(350, { i + 10, 50 });
+        enemigos.push_back(enem);
+    }
+
+}
+
+bool hayEnemigos(list<Enemy*>& enemigos)
+{
+    EnemyIndex I = enemigos.begin();
+    EnemyIndex E = enemigos.end();
+
+
+    while (I != E)
+    {
+        Enemy* enem = (*I);
+
+        if (enem->isAlive()) return true;
+    }
+
+    return false;
+}
+
+int NIVEL = 1;
+int N_ENEMIGOS = 10;
+
 int main() {
 
     //Game* juego = new Game();
@@ -116,16 +146,25 @@ int main() {
 
     //C - Contenedor de todos los enemigos
     EnemyList enemigos;
-    enemigos.push_back(new Enemy(200, { 500, 400 }));
+    enemigos.push_back(new Enemy(350, { 500, 400 }));
+    enemigos.push_back(new Enemy(350, { 350, 400 }));
+    enemigos.push_back(new Enemy(350, { 200, 200 }));
+    enemigos.push_back(new Enemy(350, { 348, 560 }));
 
     // Constantes para manejar algunas variantes con el tiempo
     float time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo beam normal
     float time_to_next_bullet_charged = 0.0f;
-    float time_to_cambiar_disparo = 0.0f;
+    float time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar entre los disparos
 
     // Start the game loop
     while (window.isOpen())
     {
+
+        if (!hayEnemigos(enemigos))
+        {
+            generarEnemigos(enemigos, N_ENEMIGOS);
+        }
+
         /*
         * Vamos aqui vamos a comprobar las colisiones antes de todo
         */
@@ -155,12 +194,35 @@ int main() {
                 {
                     beam->kill();
                     enem->bajarHp(beamCharged_daño);
-                    enem->moverPorImpacto();
+                    enem->moverPorImpacto(Retardos::Potente);
                     break;
                 }
 
                 ++I;
             };
+
+            // Recorremos todas la balas normales
+            BeamIndex I_beam = beams.begin();
+            BeamIndex E_beam = beams.end();
+            while (I_beam != E_beam)
+            {
+                Proyectil_beam* beam = (*I_beam);
+                if (!beam->isAlive())
+                {
+                    ++I_beam;
+                    continue;
+                }
+
+                if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+                {
+                    beam->kill();
+                    enem->bajarHp(bullet_daño);
+                    enem->moverPorImpacto(Retardos::Normal);
+                }
+
+                ++I_beam;
+            }
+
             ++I_Enemy;
         }
 

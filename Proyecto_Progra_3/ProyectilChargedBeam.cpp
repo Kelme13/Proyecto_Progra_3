@@ -51,9 +51,3 @@ void ProyectilChargedBeam::kill()
 {
 	m_is_alive = false;	
 }
-
-
-sf::FloatRect ProyectilChargedBeam::getBounds() const
-{
-	return spr.getGlobalBounds();
-}

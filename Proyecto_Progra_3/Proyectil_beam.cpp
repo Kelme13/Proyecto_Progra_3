@@ -39,3 +39,13 @@ bool Proyectil_beam::isAlive()
 {
 	return m_is_alive;
 }
+
+void Proyectil_beam::kill()
+{
+	m_is_alive = false;
+}
+
+sf::Sprite Proyectil_beam::getSprite()
+{
+	return this->spr;
+}

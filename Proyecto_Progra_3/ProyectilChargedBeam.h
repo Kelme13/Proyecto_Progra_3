@@ -2,6 +2,7 @@
 #include "Proyectil_beam.h"
 using namespace sf;
 
+
 class Animation_ChargedBeam
 {
 public:
@@ -55,7 +56,6 @@ private:
 	float time = 0.0f;
 };
 
-
 const float beamCharged_live_seconds = 3.0f;   //Vida maxima de una bala es segundos
 const float beamCharged_speed = 300.0f;    //Velocidad de la bala en pixel / segundo
 const float beamCharged_shoot_speed_seconds = 0.4f; // Frecuencia de disparos
@@ -72,9 +72,6 @@ public:
 	sf::Sprite getSprite();
 	bool isAlive();
 	void kill();
-
-
-	sf::FloatRect getBounds() const;
 
 private:
 	Vector2f pos;
