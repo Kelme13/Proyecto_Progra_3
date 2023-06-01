@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include <cstdlib>
 
 Enemy::Enemy(int hp, Vector2f pos)
 {
@@ -8,7 +9,7 @@ Enemy::Enemy(int hp, Vector2f pos)
 	this->Pos = pos;
 	enemyAlive = true;
 
-	Speed = 20.f;
+	Speed = 20.f + float(std::rand() % 30);
 
 	spr.setTexture(texture);
 	spr.setPosition(pos);
