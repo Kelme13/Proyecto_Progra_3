@@ -71,4 +71,6 @@ void Enemy::Update(float dt)
 		time_mover_impacto = 0.3f;
 		spr.move(0.f, dt * Speed);
 	}
+
+
 }
