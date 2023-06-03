@@ -33,6 +33,7 @@ typedef list<Enemy_Bullet*>::iterator EnemyBulletIndex;
 typedef list<Enemy*> EnemyList;
 typedef list<Enemy*>::iterator EnemyIndex;
 
+
 enum class Disparos
 {
     Beam,
@@ -167,6 +168,9 @@ int main() {
 
     //C - Contenedor de todos los enemigos
     EnemyList enemigos;
+
+    //D - Contenedor de las balas de los enemigos
+    EnemyBulletList balasEnemigas;
     
     // Start the game loop
     while (window.isOpen())

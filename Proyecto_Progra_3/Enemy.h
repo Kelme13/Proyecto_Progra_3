@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "Enemy_Bullet.h"
 
 using namespace sf;
 
@@ -132,6 +133,7 @@ public:
 	float Speed;
 	bool enemyAlive;
 	Retardos retardo;
+	void ShootBullet(Enemy_Bullet bull);
 
 
 	bool isAlive();
