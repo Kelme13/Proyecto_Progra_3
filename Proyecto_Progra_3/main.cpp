@@ -415,7 +415,26 @@ int main() {
             {
                 enemigo->Update(dt);
                 //Genera las balas
-                generarBalasEnemigas(*enemigo, balasEnemigas);
+
+                if (enemigo->getPosition().x >= 4.f  && enemigo->getPosition().x < 757.f)
+                {
+
+
+                    if (enemigo->getPosition().y >= 0.5f && enemigo->getPosition().y <= 851.5f)
+                    {
+
+
+                        generarBalasEnemigas(*enemigo, balasEnemigas);
+                    }
+
+
+
+                }
+                
+
+                // validaciones para que no se escape de la pantalla en y
+
+
 
                 if (!enemigo->isAlive())
                 {
