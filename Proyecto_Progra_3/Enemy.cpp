@@ -17,9 +17,6 @@ Enemy::Enemy(int hp, Vector2f pos)
 	spr.setTextureRect({ 16, 0, 16, 16 });
 }
 
-void Enemy::ShootBullet(Enemy_Bullet bull)
-{
-}
 
 bool Enemy::isAlive()
 {

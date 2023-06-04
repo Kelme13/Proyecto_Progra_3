@@ -117,6 +117,16 @@ bool hayEnemigos(list<Enemy*>& enemigos)
     return false;
 }
 
+void generarBalasEnemigas(Enemy& enemy, EnemyBulletList& enemyBullets)
+{
+    // Posicion del enemigo
+    sf::Vector2f position = enemy.getPosition();
+
+    // Genera la bala
+    Enemy_Bullet* bullet = new Enemy_Bullet(position);
+    enemyBullets.push_back(bullet);
+}
+
 // PARAMETROS DURANTE EL JUEGO
 
 int NIVEL = 0;
@@ -241,12 +251,13 @@ int main() {
             }
 
             ++I_Enemy;
+
+
+
+
         }
 
-
-
-
-
+        
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -403,6 +414,8 @@ int main() {
             if (enemigo->isAlive())
             {
                 enemigo->Update(dt);
+                //Genera las balas
+                generarBalasEnemigas(*enemigo, balasEnemigas);
 
                 if (!enemigo->isAlive())
                 {
@@ -472,6 +485,29 @@ int main() {
 
             ++I_Enemy;
         }
+        
+        // D - recorre la lista de balas enemigas
+        EnemyBulletIndex I_Bullet = balasEnemigas.begin();
+        EnemyBulletIndex E_Bullet = balasEnemigas.end();
+        while (I_Bullet != E_Bullet)
+        {
+            Enemy_Bullet* bullet = (*I_Bullet);
+
+            bullet->Update(dt);
+
+            if (!bullet->isAlive())
+            {
+                delete bullet;
+                I_Bullet = balasEnemigas.erase(I_Bullet);
+            }
+            else
+            {
+                bullet->Draw(window);
+                ++I_Bullet;
+            }
+        }
+
+
 
         disparoLabel.draw(window);
 

@@ -1,5 +1,7 @@
 #include "Enemy_Bullet.h"
 
+
+
 Enemy_Bullet::Enemy_Bullet(Vector2f pos_i)
 {
 	pos = pos_i;
@@ -34,6 +36,8 @@ void Enemy_Bullet::Update(float dt)
 
 	spr.setPosition(pos);
 	spr.setScale(50.f / (float)spr.getTexture()->getSize().x, 50.f / (float)spr.getTexture()->getSize().y);
+
+	
 
 }
 

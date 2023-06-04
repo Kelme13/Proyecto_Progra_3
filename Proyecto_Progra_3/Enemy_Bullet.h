@@ -83,6 +83,7 @@ private:
 
 	float m_remaing_live;
 	bool m_is_alive;
+	float shootTimer;
 
 	sf::Texture textura;
 	sf::Sprite spr;

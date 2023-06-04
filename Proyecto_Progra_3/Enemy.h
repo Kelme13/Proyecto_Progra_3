@@ -133,7 +133,6 @@ public:
 	float Speed;
 	bool enemyAlive;
 	Retardos retardo;
-	void ShootBullet(Enemy_Bullet bull);
 
 
 	bool isAlive();
@@ -142,6 +141,11 @@ public:
 
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
+
+
+	Vector2f getPosition() const {
+		return spr.getPosition();
+	}
 
 private:
 
