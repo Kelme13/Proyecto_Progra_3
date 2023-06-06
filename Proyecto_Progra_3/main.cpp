@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <chrono>
+#include <stdlib.h>
 
 #include <list>
 #include "Collision.h"
@@ -92,11 +93,21 @@ private:
 void generarEnemigos(list<Enemy*>& enemigos, int n)
 {
     Vector2f pos;
+    int cont_x = 0;
+    int cont_y = 1;
     for (int i = 0; i < n; i++)
     {
-        pos = { float(i*50) + 10.f , -200.f };
 
-        Enemy* enem = new Enemy(350, pos);
+        if (cont_x * 50 > 800)
+        {
+            cont_x = 0;
+            cont_y++;
+            
+        }
+        pos = { float(cont_x*40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80)};
+        cont_x++;
+
+        Enemy* enem = new Enemy(50, pos);
         enemigos.push_back(enem);
     }
 
@@ -119,18 +130,20 @@ bool hayEnemigos(list<Enemy*>& enemigos)
 
 void generarBalasEnemigas(Enemy& enemy, EnemyBulletList& enemyBullets)
 {
+    /*
     // Posicion del enemigo
     sf::Vector2f position = enemy.getPosition();
 
     // Genera la bala
     Enemy_Bullet* bullet = new Enemy_Bullet(position);
     enemyBullets.push_back(bullet);
+    */
 }
 
 // PARAMETROS DURANTE EL JUEGO
 
 int NIVEL = 0;
-int N_ENEMIGOS = 10;
+int N_ENEMIGOS = 0;
 
 int PUNTAJE = 0;
 
@@ -146,7 +159,7 @@ float time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar
 void subirNivel()
 {
     NIVEL += 1;
-    N_ENEMIGOS *= NIVEL;
+    N_ENEMIGOS += 5;
 }
 
 int main() {
