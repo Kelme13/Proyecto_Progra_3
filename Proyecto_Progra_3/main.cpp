@@ -142,8 +142,6 @@ float time_to_next_level = 5.0f;
 float time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo beam normal
 float time_to_next_bullet_charged = 0.0f;
 float time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar entre los disparos
-float time_to_next_bullet_enemigo = 0.0f;
-
 
 void subirNivel()
 {
@@ -415,14 +413,8 @@ int main() {
             if (enemigo->isAlive())
             {
                 enemigo->Update(dt);
-                time_to_next_bullet_enemigo -= dt;
                 //Genera las balas
-                if (time_to_next_bullet_enemigo)
-                {
-                    generarBalasEnemigas(*enemigo, balasEnemigas);
-                    time_to_next_bullet_enemigo = bulletEnemy_shoot_speed_seconds;
-                }
-                    
+                generarBalasEnemigas(*enemigo, balasEnemigas);
 
                 if (!enemigo->isAlive())
                 {
