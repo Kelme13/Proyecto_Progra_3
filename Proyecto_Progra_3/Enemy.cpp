@@ -8,6 +8,8 @@ Enemy::Enemy(int hp, Vector2f pos)
 
 	this->Pos = pos;
 	enemyAlive = true;
+	time_to_next_enemybullet = 0.0f;
+
 
 	Speed = 20.f + float(std::rand() % 30);
 
@@ -39,7 +41,7 @@ void Enemy::moverPorImpacto(Retardos a)
 	moviendo_impacto = true;
 }
 
-void Enemy::Update(float dt)
+void Enemy::Update(float dt, Vector2f pos_nave)
 {
 
 	if (hp <= 0)
@@ -70,7 +72,37 @@ void Enemy::Update(float dt)
 	{
 		moviendo_impacto = false;
 		time_mover_impacto = 0.3f;
-		spr.move(0.f, dt * Speed);
+
+		if (spr.getPosition().y > 300.f || paso)
+		{
+			// Sigue al personaje en x
+			if (spr.getPosition().x <= pos_nave.x )
+			{
+				spr.move(dt * Speed, 0.f);
+			}
+			else
+			{
+				spr.move(dt * -Speed,0.f);
+			}
+
+			// Sigue al personaje en y
+			if (spr.getPosition().y >= pos_nave.y)
+			{
+				spr.move(0.f, dt * -Speed);
+			}
+			else
+			{
+				spr.move(0.f, dt * Speed);
+			}
+
+			paso = true;
+		}
+		else
+		{
+			spr.move(0.f, dt * Speed);
+		}
+		
+		
 	}
 
 

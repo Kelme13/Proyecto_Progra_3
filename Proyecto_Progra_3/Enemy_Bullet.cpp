@@ -35,7 +35,7 @@ void Enemy_Bullet::Update(float dt)
 	animaciones.ApplyToSprite(spr);
 
 	spr.setPosition(pos);
-	spr.setScale(50.f / (float)spr.getTexture()->getSize().x, 50.f / (float)spr.getTexture()->getSize().y);
+	spr.setScale(80.f / (float)spr.getTexture()->getSize().x, 50.f / (float)spr.getTexture()->getSize().y);
 
 	
 

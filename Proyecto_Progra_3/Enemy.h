@@ -133,14 +133,16 @@ public:
 	float Speed;
 	bool enemyAlive;
 	Retardos retardo;
-
+	//Variable para balas
+	float time_to_next_enemybullet;
+	float frequencyBullet = 0.5f;
 
 	bool isAlive();
 	void bajarHp(int daño);
 	void moverPorImpacto(Retardos a);
 
 	void Draw(RenderTarget& rt) const;
-	void Update(float dt);
+	void Update(float dt, Vector2f pos_nave);
 
 
 	Vector2f getPosition() const {
@@ -154,6 +156,9 @@ private:
 	// Variables para manejar en el movimiento cuando lo golpea un disparo
 	bool moviendo_impacto = false;
 	float time_mover_impacto = 0.2f;
+
+	// variable para que ignore la y en la posicion
+	bool paso = false;
 
 	// Objeto para determinar la animacion de explosion;
 	Animation_Explosion animaciones_explosion;
