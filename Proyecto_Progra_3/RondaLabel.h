@@ -224,10 +224,6 @@ public:
 			break;
 		}
 
-	
-		std::cout << "Unidades: " << u;
-		std::cout << "Decenas: " << d;
-		std::cout << "Centenas: " << c;
 	}
 	
 

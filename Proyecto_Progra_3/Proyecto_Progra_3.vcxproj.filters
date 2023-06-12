@@ -19,6 +19,18 @@
     <Filter Include="Archivos de origen\Labels">
       <UniqueIdentifier>{c77067f5-90a3-4798-9294-78fc398f7b32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de origen\Enemigos">
+      <UniqueIdentifier>{4e4ea288-f5af-4709-8505-c49c199d4180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Enemigos">
+      <UniqueIdentifier>{03a8e68e-a044-4406-aa00-b9c00ae8f7f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\DisparosNave">
+      <UniqueIdentifier>{e9d55cfe-0213-45e5-b051-dc30ec479f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\DisparosNave">
+      <UniqueIdentifier>{a0269e22-d1b9-4eed-bd7c-1ba2154e782d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,29 +45,29 @@
     <ClCompile Include="Background.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Proyectil_beam.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="ProyectilChargedBeam.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Bullet.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="VidasLabel.cpp">
       <Filter>Archivos de origen\Labels</Filter>
     </ClCompile>
-    <ClCompile Include="Enemigo_Lip.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="DisparoLabel.h">
       <Filter>Archivos de encabezado\Labels</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Archivos de origen\Enemigos</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Bullet.cpp">
+      <Filter>Archivos de origen\Enemigos</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemigo_Lip.cpp">
+      <Filter>Archivos de origen\Enemigos</Filter>
+    </ClCompile>
+    <ClCompile Include="Proyectil_beam.cpp">
+      <Filter>Archivos de origen\DisparosNave</Filter>
+    </ClCompile>
+    <ClCompile Include="ProyectilChargedBeam.cpp">
+      <Filter>Archivos de origen\DisparosNave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,29 +80,29 @@
     <ClInclude Include="Background.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Proyectil_beam.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ProyectilChargedBeam.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Bullet.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="VidasLabel.h">
       <Filter>Archivos de encabezado\Labels</Filter>
     </ClInclude>
-    <ClInclude Include="Enemigo_Lip.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="RondaLabel.h">
       <Filter>Archivos de encabezado\Labels</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemigo_Lip.h">
+      <Filter>Archivos de encabezado\Enemigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Archivos de encabezado\Enemigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Bullet.h">
+      <Filter>Archivos de encabezado\Enemigos</Filter>
+    </ClInclude>
+    <ClInclude Include="Proyectil_beam.h">
+      <Filter>Archivos de encabezado\DisparosNave</Filter>
+    </ClInclude>
+    <ClInclude Include="ProyectilChargedBeam.h">
+      <Filter>Archivos de encabezado\DisparosNave</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
