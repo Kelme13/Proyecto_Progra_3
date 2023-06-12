@@ -7,7 +7,7 @@ using namespace sf;
 
 const float bulletEnemy_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
 const float bulletEnemy_speed = 400.0f;    //Velocidad de la bala en pixel / segundo
-const float bulletEnemy_shoot_speed_seconds = 0.5f; // Frecuencia de disparos
+const float bulletEnemy_shoot_speed_seconds = 2.f; // Frecuencia de disparos
 const float bulletEnemy_daño = 50.f;
 
 
@@ -47,6 +47,7 @@ public:
 			Advance();
 		}
 	}
+	
 
 private:
 	void Advance()
@@ -76,6 +77,8 @@ public:
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
 	bool isAlive();
+
+	Sprite getSprite();
 
 private:
 	Vector2f pos;

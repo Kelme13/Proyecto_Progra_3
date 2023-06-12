@@ -45,3 +45,8 @@ bool Enemy_Bullet::isAlive()
 {
 	return m_is_alive;
 }
+
+Sprite Enemy_Bullet::getSprite()
+{
+	return this->spr;
+}

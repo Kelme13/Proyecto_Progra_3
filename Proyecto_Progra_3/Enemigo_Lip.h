@@ -72,7 +72,8 @@ public:
 	Retardos retardo;
 	//Variable para balas
 	float time_to_next_enemybullet;
-	float frequencyBullet = 0.5f;
+
+	float frequencyBullet = 1.f;
 
 	bool isAlive();
 	void bajarHp(int daño);

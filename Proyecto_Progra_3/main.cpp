@@ -141,7 +141,7 @@ void generarBalasEnemigas(Enemy_Lip& enemy, EnemyBulletList& enemyBullets)
 
 int RONDA = 0;
 int N_ENEMIGOS = 10;
-int N_ENEMIGOSLIP = 5;
+int N_ENEMIGOSLIP = 2;
 
 int PUNTAJE = 0;
 int VIDAS = 5;
@@ -360,6 +360,30 @@ int main() {
 
 
 			++I_EnemyLip;
+		}
+
+		EnemyBulletIndex I_EnemyBullet = balasEnemigas.begin();
+		EnemyBulletIndex E_EnmeyBullet = balasEnemigas.end();
+
+		while (I_EnemyBullet != E_EnmeyBullet)
+		{
+			Enemy_Bullet* balaE = (*I_EnemyBullet);
+
+			if (balaE->isAlive())
+			{
+				if (Collision::PixelPerfectTest(nave->getSprite(), balaE->getSprite()))
+				{
+					if (time_to_restar_vida <= 0.f)
+					{
+						nave->Golpearon();
+						VIDAS--;
+						time_to_restar_vida = 5.f;
+					}
+				}
+
+			}
+
+			++I_EnemyBullet;
 		}
 
 		// Process events
