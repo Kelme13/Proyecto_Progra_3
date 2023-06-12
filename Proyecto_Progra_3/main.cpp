@@ -508,7 +508,6 @@ int main() {
 
 
 		disparoLabel.draw(window);
-		
 		rondaLabel.draw(window);
 
 		time_to_restar_vida -= dt;
