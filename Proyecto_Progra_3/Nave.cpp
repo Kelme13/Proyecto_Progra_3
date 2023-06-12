@@ -88,6 +88,17 @@ void Nave::Update(float dt)
 	animaciones[iFrame_booster].Update(dt);
 	animaciones[iFrame_booster].ApplyToSprite(spr_booster);
 	
+	if (loGolpearon && time_trasparencia >= 0)
+	{
+		this->spr->setColor(Color(242, 124, 124, 100));
+		time_trasparencia -= dt;
+	}
+	else
+	{
+		loGolpearon = false;
+		this->spr->setColor(Color::White);
+		time_trasparencia = 5.f;
+	}
 
 	hitbox.setPosition({ pos.x + 14, pos.y + 18 });
 }
@@ -116,6 +127,16 @@ void Nave::Normal()
 	spr_booster.setScale(110.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
 	spr_booster.setPosition({ pos.x, pos.y + 46 });
 	spr->setScale(110.f / (float)spr->getTexture()->getSize().x, 50.f / (float)spr->getTexture()->getSize().y);
+}
+
+void Nave::Golpearon()
+{
+	this->loGolpearon = true;
+}
+
+Sprite Nave::getSprite()
+{
+	return *this->spr;
 }
 
 Vector2f Nave::getPos()

@@ -13,6 +13,7 @@
 #include "ProyectilChargedBeam.h"
 #include "Enemy_Bullet.h"
 #include"Enemy.h"
+#include "VidasLabel.h"
 
 using namespace std;
 using namespace sf;
@@ -46,7 +47,7 @@ class DisparoLabel
 public:
 	DisparoLabel()
 	{
-		pos = { 790.f, 25.f };
+		pos = { 790.f, 50.f };
 
 		texturas[0].loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_beam (16 x 16).png");
 		texturas[1].loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_charged_beam (16 x 16).png");
@@ -145,10 +146,10 @@ void generarBalasEnemigas(Enemy& enemy, EnemyBulletList& enemyBullets)
 // PARAMETROS DURANTE EL JUEGO
 
 int NIVEL = 0;
-int N_ENEMIGOS = 0;
+int N_ENEMIGOS = 10;
 
 int PUNTAJE = 0;
-
+int VIDAS = 5;
 // VARIABLES DE TIEMPO DURANTE EL JUEGO en segundos;
 
 float time_to_next_level = 5.0f;
@@ -157,6 +158,7 @@ float time_to_next_level = 5.0f;
 float time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo beam normal
 float time_to_next_bullet_charged = 0.0f;
 float time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar entre los disparos
+float time_to_restar_vida = 0.0f; // Espacio de tiempo para restarle la vida
 
 void subirNivel()
 {
@@ -170,7 +172,7 @@ int main() {
 
 	Disparos actualDisparo = Disparos::Beam;
 	DisparoLabel disparoLabel;
-
+	VidasLabel vidasLabel;
 
 
 	sf::RenderWindow window(sf::VideoMode(800, 900), "SpaceShooter - P3");
@@ -268,10 +270,22 @@ int main() {
 				++I_beam;
 			}
 
+			if (enem->isAlive())
+			{
+				if (Collision::PixelPerfectTest(enem->spr, nave->getSprite()))
+				{
+					if (time_to_restar_vida <= 0.f)
+					{
+						nave->Golpearon();
+						VIDAS--;
+						time_to_restar_vida = 5.f;
+					}
+						
+				}
+			}
+
+
 			++I_Enemy;
-
-
-
 
 		}
 
@@ -447,14 +461,6 @@ int main() {
 					}
 				}
 
-
-
-
-
-
-
-
-
 				if (!enemigo->isAlive())
 				{
 					delete enemigo;
@@ -548,6 +554,10 @@ int main() {
 
 
 		disparoLabel.draw(window);
+
+		time_to_restar_vida -= dt;
+		vidasLabel.actualizarVidas(VIDAS);
+		vidasLabel.draw(window);
 
 
 		// Update the window

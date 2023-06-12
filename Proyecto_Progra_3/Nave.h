@@ -97,6 +97,9 @@ private:
 		Count
 	};
 
+	bool loGolpearon = false;
+	float time_trasparencia = 0.f;
+
 	AnimationIndex curAnimation = AnimationIndex::RighMov;
 
 public:
@@ -108,6 +111,10 @@ public:
 	void Update(float dt);
 	void Miniatura();
 	void Normal();
+	void Golpearon();
+
+	Sprite getSprite();
+	
 
 	Vector2f getPos();
 

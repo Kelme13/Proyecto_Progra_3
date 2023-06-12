@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de encabezado\Labels">
+      <UniqueIdentifier>{2c5e7360-eab5-4ffc-976a-43384c12563e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\Labels">
+      <UniqueIdentifier>{c77067f5-90a3-4798-9294-78fc398f7b32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +48,9 @@
     <ClCompile Include="Collision.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="VidasLabel.cpp">
+      <Filter>Archivos de origen\Labels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -67,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="VidasLabel.h">
+      <Filter>Archivos de encabezado\Labels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
