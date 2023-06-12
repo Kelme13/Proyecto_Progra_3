@@ -12,7 +12,8 @@
 #include "Game.h"
 #include "ProyectilChargedBeam.h"
 #include "Enemy_Bullet.h"
-#include"Enemy.h"
+#include "Enemy.h"
+#include "Enemigo_Lip.h"
 
 #include "DisparoLabel.h"
 #include "VidasLabel.h"
@@ -38,6 +39,9 @@ typedef list<Enemy_Bullet*>::iterator EnemyBulletIndex;
 typedef list<Enemy*> EnemyList;
 typedef list<Enemy*>::iterator EnemyIndex;
 
+typedef list<Enemy_Lip*> EnemyLipList;
+typedef list<Enemy_Lip*>::iterator EnemyLipIndex;
+
 
 enum class Disparos
 {
@@ -46,7 +50,7 @@ enum class Disparos
 };
 
 
-void generarEnemigos(list<Enemy*>& enemigos, int n)
+void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int n, int l)
 {
 	
 	Vector2f pos;
@@ -67,6 +71,26 @@ void generarEnemigos(list<Enemy*>& enemigos, int n)
 		Enemy* enem = new Enemy(50, pos);
 		enemigos.push_back(enem);
 	}
+
+	cont_x = 0;
+	cont_y = 1;
+
+	for (int i = 0; i < l; i++)
+	{
+		if (cont_x * 50 > 800)
+		{
+			cont_x = 0;
+			cont_y++;
+
+		}
+
+		pos = { float(cont_x * 40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80) };
+		cont_x++;
+
+		Enemy_Lip* enem = new Enemy_Lip(50, pos);
+		enemigosLip.push_back(enem);
+
+	}
 	
 
 }
@@ -86,7 +110,22 @@ bool hayEnemigos(list<Enemy*>& enemigos)
 	return false;
 }
 
-void generarBalasEnemigas(Enemy& enemy, EnemyBulletList& enemyBullets)
+bool hayEnemigos(list<Enemy_Lip*>& enemigos)
+{
+	EnemyLipIndex I = enemigos.begin();
+	EnemyLipIndex E = enemigos.end();
+
+
+	while (I != E)
+	{
+		Enemy_Lip* enem = (*I);
+		if (enem->isAlive()) return true;
+	}
+
+	return false;
+}
+
+void generarBalasEnemigas(Enemy_Lip& enemy, EnemyBulletList& enemyBullets)
 {
 
 	// Posicion del enemigo
@@ -102,6 +141,7 @@ void generarBalasEnemigas(Enemy& enemy, EnemyBulletList& enemyBullets)
 
 int RONDA = 0;
 int N_ENEMIGOS = 10;
+int N_ENEMIGOSLIP = 5;
 
 int PUNTAJE = 0;
 int VIDAS = 5;
@@ -119,6 +159,7 @@ void subirRonda()
 {
 	RONDA += 1;
 	N_ENEMIGOS += 5;
+	N_ENEMIGOSLIP += 3;
 }
 
 int main() {
@@ -156,14 +197,18 @@ int main() {
 	//D - Contenedor de las balas de los enemigos
 	EnemyBulletList balasEnemigas;
 
+	//E - Contenedor de los enemigos Lip
+	EnemyLipList enemigosLip;
+
+
 	// Start the game loop
 	while (window.isOpen())
 	{
 
-		if (!hayEnemigos(enemigos))
+		if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip))
 		{
 			subirRonda();
-			generarEnemigos(enemigos, N_ENEMIGOS);
+			generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
 			rondaLabel.subirRonda(RONDA);
 		}
 
@@ -244,6 +289,78 @@ int main() {
 
 		}
 
+
+		// Recorre todos los enemigos que disparan
+		EnemyLipIndex I_EnemyLip = enemigosLip.begin();
+		EnemyLipIndex E_EnemyLip = enemigosLip.end();
+
+		while (I_EnemyLip != E_EnemyLip)
+		{
+			Enemy_Lip* enem = (*I_EnemyLip);
+
+			// Recorre todas la balas - Cargadas
+			ChargedBeamIndex I = chargedBeams.begin();
+			ChargedBeamIndex E = chargedBeams.end();
+
+			while (I != E)
+			{
+				ProyectilChargedBeam* beam = (*I);
+				if (!beam->isAlive())
+				{
+					++I;
+					continue;
+				}
+
+				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+				{
+					beam->kill();
+					enem->bajarHp(beamCharged_daño);
+					enem->moverPorImpacto(Retardos::Potente);
+					break;
+				}
+
+				++I;
+			};
+
+			// Recorremos todas la balas normales
+			BeamIndex I_beam = beams.begin();
+			BeamIndex E_beam = beams.end();
+			while (I_beam != E_beam)
+			{
+				Proyectil_beam* beam = (*I_beam);
+				if (!beam->isAlive())
+				{
+					++I_beam;
+					continue;
+				}
+
+				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+				{
+					beam->kill();
+					enem->bajarHp(bullet_daño);
+					enem->moverPorImpacto(Retardos::Normal);
+				}
+
+				++I_beam;
+			}
+
+			if (enem->isAlive())
+			{
+				if (Collision::PixelPerfectTest(enem->spr, nave->getSprite()))
+				{
+					if (time_to_restar_vida <= 0.f)
+					{
+						nave->Golpearon();
+						VIDAS--;
+						time_to_restar_vida = 5.f;
+					}
+
+				}
+			}
+
+
+			++I_EnemyLip;
+		}
 
 		// Process events
 		sf::Event event;
@@ -433,6 +550,50 @@ int main() {
 			}
 		}
 
+
+
+		// Recorre la lista de enemigos y las balas
+		I_EnemyLip = enemigosLip.begin();
+		E_EnemyLip = enemigosLip.end();
+
+		while (I_EnemyLip != E_EnemyLip)
+		{
+			Enemy_Lip* enemigo = (*I_EnemyLip);
+
+			if (enemigo->isAlive())
+			{
+				enemigo->Update(dt, nave->getPos());
+				//Genera las balas
+
+				// validaciones para que no se escape de la pantalla en x
+				if (enemigo->getPosition().x >= 4.f && enemigo->getPosition().x <= 757.f) {
+					if (enemigo->getPosition().y >= 0.5f && enemigo->getPosition().x <= 851.5f) {
+
+						enemigo->time_to_next_enemybullet -= dt;
+						if (enemigo->time_to_next_enemybullet <= 0) {
+
+							generarBalasEnemigas(*enemigo, balasEnemigas);
+							enemigo->time_to_next_enemybullet = enemigo->frequencyBullet;
+						}
+					}
+				}
+
+				if (!enemigo->isAlive())
+				{
+					delete enemigo;
+					I_EnemyLip = enemigosLip.erase(I_EnemyLip);
+				}
+				else
+				{
+					++I_EnemyLip;
+				}
+			}
+			else
+			{
+				delete enemigo;
+				I_EnemyLip = enemigosLip.erase(I_EnemyLip);
+			}
+		}
 		// Clear screen
 		window.clear();
 
@@ -506,7 +667,16 @@ int main() {
 			}
 		}
 
+		// Dibujamos los enemigos que disparan
+		I_EnemyLip = enemigosLip.begin();
+		E_EnemyLip = enemigosLip.end();
 
+		while (I_EnemyLip != E_EnemyLip)
+		{
+			Enemy_Lip* enemigo = (*I_EnemyLip);
+			enemigo->Draw(window);
+			++I_EnemyLip;
+		}
 
 		disparoLabel.draw(window);
 		rondaLabel.draw(window);
