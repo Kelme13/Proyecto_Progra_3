@@ -46,6 +46,19 @@ public:
 	}
 
 
+	void subirRonda()
+	{
+		if (++und == 9)
+		{
+			und == 0;
+			if (++dec == 9)
+			{
+				dec = 0;
+				++cen;
+			}
+		}
+
+	}
 	
 
 	void draw(RenderTarget& rt) const
@@ -60,7 +73,7 @@ private:
 	Texture textura;
 	Sprite unidades[10], decimas[10], centecimas[10];
 
-	int und = 9, dec = 9, cen = 9;
+	int und = 7, dec = 9, cen = 9;
 
 
 };

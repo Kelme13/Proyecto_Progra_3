@@ -164,6 +164,7 @@ int main() {
 		{
 			subirNivel();
 			generarEnemigos(enemigos, N_ENEMIGOS);
+			rondaLabel.subirRonda();
 		}
 
 		/*
