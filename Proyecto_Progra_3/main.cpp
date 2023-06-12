@@ -100,7 +100,7 @@ void generarBalasEnemigas(Enemy& enemy, EnemyBulletList& enemyBullets)
 
 // PARAMETROS DURANTE EL JUEGO
 
-int NIVEL = 0;
+int RONDA = 0;
 int N_ENEMIGOS = 10;
 
 int PUNTAJE = 0;
@@ -115,9 +115,9 @@ float time_to_next_bullet_charged = 0.0f;
 float time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar entre los disparos
 float time_to_restar_vida = 0.0f; // Espacio de tiempo para restarle la vida
 
-void subirNivel()
+void subirRonda()
 {
-	NIVEL += 1;
+	RONDA += 1;
 	N_ENEMIGOS += 5;
 }
 
@@ -162,9 +162,9 @@ int main() {
 
 		if (!hayEnemigos(enemigos))
 		{
-			subirNivel();
+			subirRonda();
 			generarEnemigos(enemigos, N_ENEMIGOS);
-			rondaLabel.subirRonda();
+			rondaLabel.subirRonda(RONDA);
 		}
 
 		/*
