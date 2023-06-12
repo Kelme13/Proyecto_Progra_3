@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DisparoLabel.h" />
     <ClCompile Include="Enemigo_Lip.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Enemy_Bullet.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Nave.h" />
     <ClInclude Include="ProyectilChargedBeam.h" />
     <ClInclude Include="Proyectil_beam.h" />
+    <ClInclude Include="RondaLabel.h" />
     <ClInclude Include="VidasLabel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
