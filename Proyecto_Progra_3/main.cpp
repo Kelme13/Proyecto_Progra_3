@@ -200,8 +200,6 @@ int main() {
 	//D - Contenedor de las balas de los enemigos
 	EnemyBulletList balasEnemigas;
 
-	enemigos.push_back(new Enemy(100, { 450, 50 }));
-
 	// Start the game loop
 	while (window.isOpen())
 	{

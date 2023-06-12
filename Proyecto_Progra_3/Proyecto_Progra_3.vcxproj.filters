@@ -51,6 +51,9 @@
     <ClCompile Include="VidasLabel.cpp">
       <Filter>Archivos de origen\Labels</Filter>
     </ClCompile>
+    <ClCompile Include="Enemigo_Lip.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="VidasLabel.h">
       <Filter>Archivos de encabezado\Labels</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemigo_Lip.h">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
