@@ -68,7 +68,7 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 		pos = { float(cont_x*40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80)};
 		cont_x++;
 
-		Enemy* enem = new Enemy(50, pos);
+		Enemy* enem = new Enemy(200, pos);
 		enemigos.push_back(enem);
 	}
 
@@ -129,7 +129,7 @@ void generarBalasEnemigas(Enemy_Lip& enemy, EnemyBulletList& enemyBullets)
 {
 
 	// Posicion del enemigo
-	sf::Vector2f position = {enemy.getPosition().x+14.f, enemy.getPosition().y};
+	sf::Vector2f position = {enemy.getPosition().x+6.f, enemy.getPosition().y};
 
 	// Genera la bala
 	Enemy_Bullet* bullet = new Enemy_Bullet(position);

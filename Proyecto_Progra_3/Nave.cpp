@@ -114,8 +114,8 @@ void Nave::Draw(RenderTarget& rt) const
 
 void Nave::Miniatura() {
 
-	spr->setScale(100.f / (float)spr->getTexture()->getSize().x, 40.f / (float)spr->getTexture()->getSize().y);
-	spr_booster.setScale(100.f / (float)spr->getTexture()->getSize().x, 40.f / (float)spr->getTexture()->getSize().y);
+	spr->setScale(80.f / (float)spr->getTexture()->getSize().x, 40.f / (float)spr->getTexture()->getSize().y);
+	spr_booster.setScale(80.f / (float)spr->getTexture()->getSize().x, 40.f / (float)spr->getTexture()->getSize().y);
 	spr_booster.setPosition({ pos.x, pos.y + 36});
 	
 	speed = 300.f + 70.f;

@@ -5,7 +5,7 @@
 using namespace sf;
 
 
-const float bulletEnemy_live_seconds = 2.0f;   //Vida maxima de una bala es segundos
+const float bulletEnemy_live_seconds = 3.0f;   //Vida maxima de una bala es segundos
 const float bulletEnemy_speed = 400.0f;    //Velocidad de la bala en pixel / segundo
 const float bulletEnemy_shoot_speed_seconds = 2.f; // Frecuencia de disparos
 const float bulletEnemy_daño = 50.f;
