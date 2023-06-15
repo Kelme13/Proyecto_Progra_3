@@ -18,6 +18,7 @@
 #include "DisparoLabel.h"
 #include "VidasLabel.h"
 #include "RondaLabel.h"
+#include "MainMenu.h"
 
 using namespace std;
 using namespace sf;
@@ -162,9 +163,56 @@ void subirRonda()
 	N_ENEMIGOSLIP += 3;
 }
 
+
+//Menu
+
+void Menu(RenderWindow& rt) {
+
+	MainMenu* menu = new MainMenu();
+	
+	while (rt.isOpen() && menu->Abierto) {
+
+		Event event;
+		while (rt.pollEvent(event)) {
+
+			if (event.type == Event::Closed) {
+				rt.close();
+			}
+
+			if (event.type == Event::KeyReleased) {
+
+				if (event.key.code == Keyboard::Up) {
+					menu->MoveUp();
+					break;
+				}
+
+
+				if (event.key.code == Keyboard::Down) {
+					menu->MoveDown();
+					break;
+				}
+
+				if (event.key.code == Keyboard::Return) {
+
+				}
+
+
+
+			}
+
+		}
+
+
+	}
+
+}
+
+
+
+
+
 int main() {
 
-	//Game* juego = new Game();
 
 	Disparos actualDisparo = Disparos::Beam;
 	DisparoLabel disparoLabel;

@@ -141,6 +141,7 @@
     <ClCompile Include="Enemy_Bullet.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Nave.cpp" />
     <ClCompile Include="ProyectilChargedBeam.cpp" />
     <ClCompile Include="Proyectil_beam.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_Bullet.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Nave.h" />
     <ClInclude Include="ProyectilChargedBeam.h" />
     <ClInclude Include="Proyectil_beam.h" />
