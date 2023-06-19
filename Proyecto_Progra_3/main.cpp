@@ -14,6 +14,7 @@
 #include "Enemy_Bullet.h"
 #include "Enemy.h"
 #include "Enemigo_Lip.h"
+#include "PowerUps.h"
 
 #include "DisparoLabel.h"
 #include "VidasLabel.h"
@@ -44,6 +45,9 @@ typedef list<Enemy_Lip*> EnemyLipList;
 typedef list<Enemy_Lip*>::iterator EnemyLipIndex;
 
 
+typedef list<PowerUps*> PowerUpsList;
+typedef list<PowerUps*>::iterator PowerUpIndex;
+
 enum class Disparos
 {
 	Beam,
@@ -53,7 +57,7 @@ enum class Disparos
 
 void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int n, int l)
 {
-	
+
 	Vector2f pos;
 	int cont_x = 0;
 	int cont_y = 1;
@@ -66,7 +70,7 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 			cont_y++;
 
 		}
-		pos = { float(cont_x*40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80)};
+		pos = { float(cont_x * 40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80) };
 		cont_x++;
 
 		Enemy* enem = new Enemy(200, pos);
@@ -92,7 +96,7 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 		enemigosLip.push_back(enem);
 
 	}
-	
+
 
 }
 
@@ -130,7 +134,7 @@ void generarBalasEnemigas(Enemy_Lip& enemy, EnemyBulletList& enemyBullets)
 {
 
 	// Posicion del enemigo
-	sf::Vector2f position = {enemy.getPosition().x+6.f, enemy.getPosition().y};
+	sf::Vector2f position = { enemy.getPosition().x + 6.f, enemy.getPosition().y };
 
 	// Genera la bala
 	Enemy_Bullet* bullet = new Enemy_Bullet(position);
@@ -156,11 +160,19 @@ float time_to_next_bullet_charged = 0.0f;
 float time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar entre los disparos
 float time_to_restar_vida = 0.0f; // Espacio de tiempo para restarle la vida
 
+
+// tiempo en que se genera un powerUps;
+float time_power_salud = 0.f;
+float time_power_dano = 0.f;
+
 void subirRonda()
 {
 	RONDA += 1;
 	N_ENEMIGOS += 5;
 	N_ENEMIGOSLIP += 3;
+
+	time_power_dano = 5.f;
+	time_power_salud = 10.f;
 }
 
 
@@ -169,7 +181,7 @@ void subirRonda()
 void Menu(RenderWindow& rt) {
 
 	MainMenu* menu = new MainMenu();
-	
+
 	while (rt.isOpen() && menu->Abierto) {
 
 		Event event;
@@ -219,7 +231,7 @@ void Menu(RenderWindow& rt) {
 			}
 
 		}
-	
+
 		rt.clear();
 		menu->Draw(rt);
 		rt.display();
@@ -229,7 +241,21 @@ void Menu(RenderWindow& rt) {
 }
 
 
+bool isActivoDanoMaximo(PowerUpsList& lista)
+{
+	PowerUpIndex I = lista.begin(), E = lista.end();
 
+	while (I != E)
+	{
+		PowerUps* p = (*I);
+
+		if (p->isActivo()) return true;
+
+		++I;
+	}
+
+	return false;
+}
 
 
 int main() {
@@ -269,6 +295,11 @@ int main() {
 	//E - Contenedor de los enemigos Lip
 	EnemyLipList enemigosLip;
 
+	PowerUpsList powerUps;
+	PowerUpIndex I_Power;
+	PowerUpIndex E_Power;
+
+
 
 	//Menu
 	Menu(window);
@@ -292,6 +323,8 @@ int main() {
 		EnemyIndex I_Enemy = enemigos.begin();
 		EnemyIndex E_Enemy = enemigos.end();
 
+		bool danoMaximo = false;//isActivoDanoMaximo(powerUps);
+
 		while (I_Enemy != E_Enemy)
 		{
 			Enemy* enem = (*I_Enemy);
@@ -312,7 +345,9 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp(beamCharged_daño);
+
+					enem->bajarHp((danoMaximo ? beamCharged_daño * 2 : beamCharged_daño));
+
 					enem->moverPorImpacto(Retardos::Potente);
 					break;
 				}
@@ -335,7 +370,7 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp(bullet_daño);
+					enem->bajarHp((danoMaximo ? bullet_daño * 2 : bullet_daño));
 					enem->moverPorImpacto(Retardos::Normal);
 				}
 
@@ -352,7 +387,7 @@ int main() {
 						VIDAS--;
 						time_to_restar_vida = 5.f;
 					}
-						
+
 				}
 			}
 
@@ -386,7 +421,7 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp(beamCharged_daño);
+					enem->bajarHp((danoMaximo ? beamCharged_daño * 2 : beamCharged_daño));
 					enem->moverPorImpacto(Retardos::Potente);
 					break;
 				}
@@ -409,7 +444,7 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp(bullet_daño);
+					enem->bajarHp((danoMaximo ? bullet_daño * 2 : bullet_daño));
 					enem->moverPorImpacto(Retardos::Normal);
 				}
 
@@ -458,6 +493,30 @@ int main() {
 			++I_EnemyBullet;
 		}
 
+
+
+		I_Power = powerUps.begin();
+		E_Power = powerUps.end();
+
+		while (I_Power != E_Power)
+		{
+			PowerUps* p = (*I_Power);
+
+			if (Collision::PixelPerfectTest(p->getSprite(), nave->getSprite()))
+			{
+
+				p->noMostrar();
+
+				if (p->getTipo() == typePower::SaludMaxima) VIDAS = 5;
+
+				if (p->getTipo() == typePower::DanoMaximo)
+				{
+					p->activarPower(time_DanoMaximo);
+				}
+
+			}
+		}
+
 		// Process events
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -479,6 +538,10 @@ int main() {
 		time_to_next_bullet -= dt;
 		time_to_next_bullet_charged -= dt;
 		time_to_cambiar_disparo -= dt;
+
+		time_power_dano -= dt;
+		time_power_salud -= dt;
+
 
 		// Espera un tiempo entre las pulsaciones para evitar posibles repeticiones
 		if (Keyboard::isKeyPressed(sf::Keyboard::A) && time_to_cambiar_disparo < 0.0f)
@@ -563,6 +626,27 @@ int main() {
 		// update nave
 		nave->Update(dt);
 
+		I_Power = powerUps.begin();
+		E_Power = powerUps.end();
+
+		/*
+		while (I_Power != E_Power)
+		{
+			PowerUps* p = (*I_Power);
+			
+			if (p->isActivo())
+			{
+				p->update(dt);
+				++I_Power;
+			}
+			else if(!p->isMostrar())
+			{
+				I_Power = powerUps.erase(I_Power);
+			}
+
+		}
+
+		*/
 
 		// A - Actualizmos las balas de los normales
 		BeamIndex I = beams.begin();
@@ -780,6 +864,28 @@ int main() {
 		time_to_restar_vida -= dt;
 		vidasLabel.actualizarVidas(VIDAS);
 		vidasLabel.draw(window);
+
+		I_Power = powerUps.begin();
+		E_Power = powerUps.end();
+		
+		while (I_Power != E_Power)
+		{
+			PowerUps* p = (*I_Power);
+			p->draw(window);
+			++I_Power;
+		}
+		
+
+		if (time_power_dano <= 0.f)
+		{
+			powerUps.push_back(new PowerUps(typePower::DanoMaximo));
+		}
+
+		if (time_power_salud <= 0.f)
+		{
+			powerUps.push_back(new PowerUps(typePower::SaludMaxima));
+		}
+
 
 
 		// Update the window

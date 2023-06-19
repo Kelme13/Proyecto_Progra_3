@@ -35,6 +35,7 @@ void Proyectil_beam::Update(float dt)
 	spr.setScale(30.f / (float)spr.getTexture()->getSize().x, 30.f / (float)spr.getTexture()->getSize().y);
 }
 
+
 bool Proyectil_beam::isAlive()
 {
 	return m_is_alive;

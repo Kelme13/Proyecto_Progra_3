@@ -73,6 +73,7 @@ public:
 
 	void Draw(RenderTarget& rt) const;
 	void Update(float dt);
+
 	bool isAlive();
 	void kill();
 	sf::Sprite getSprite();

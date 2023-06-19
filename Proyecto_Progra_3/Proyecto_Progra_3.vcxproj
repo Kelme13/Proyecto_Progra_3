@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="DanoMaxLabel.cpp" />
     <ClCompile Include="DisparoLabel.h" />
     <ClCompile Include="Enemigo_Lip.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Nave.cpp" />
+    <ClCompile Include="PowerUps.cpp" />
     <ClCompile Include="ProyectilChargedBeam.cpp" />
     <ClCompile Include="Proyectil_beam.cpp" />
     <ClCompile Include="VidasLabel.cpp" />
@@ -150,12 +152,14 @@
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="DanoMaxLabel.h" />
     <ClInclude Include="Enemigo_Lip.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Enemy_Bullet.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Nave.h" />
+    <ClInclude Include="PowerUps.h" />
     <ClInclude Include="ProyectilChargedBeam.h" />
     <ClInclude Include="Proyectil_beam.h" />
     <ClInclude Include="RondaLabel.h" />
