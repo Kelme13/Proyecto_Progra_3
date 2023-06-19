@@ -17,7 +17,7 @@ PowerUps::PowerUps(typePower p)
 	// Voy a generar un random en x
 	int x = std::rand() % 3;
 
-	pos = {float(x * 200) + 30.f, -50.f};
+	pos = {float(x * 200) + 30.f, 1.f};
 	vel = { 0.f, 0.f };
 }
 
@@ -30,7 +30,7 @@ void PowerUps::update(float dt)
 {
 
 	Vector2f tp = { 0.f, +1.f };
-	vel = tp * 300.f;
+	vel = tp * 200.f;
 	pos += vel * dt;
 
 	spr.setPosition(pos);

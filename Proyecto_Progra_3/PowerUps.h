@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-const float time_DanoMaximo = 5.f;
+const float time_DanoMaximo = 10.f;
 
 
 //	Creamos un enunciado que determinara el tipo que es, para tenerlo todos agrupado

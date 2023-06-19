@@ -145,6 +145,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Nave.cpp" />
     <ClCompile Include="PowerUps.cpp" />
+    <ClCompile Include="PowerupsLabel.cpp" />
     <ClCompile Include="ProyectilChargedBeam.cpp" />
     <ClCompile Include="Proyectil_beam.cpp" />
     <ClCompile Include="VidasLabel.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Nave.h" />
     <ClInclude Include="PowerUps.h" />
+    <ClInclude Include="PowerupsLabel.h" />
     <ClInclude Include="ProyectilChargedBeam.h" />
     <ClInclude Include="Proyectil_beam.h" />
     <ClInclude Include="RondaLabel.h" />

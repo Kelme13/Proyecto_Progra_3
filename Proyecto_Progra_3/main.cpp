@@ -6,6 +6,7 @@
 #include <list>
 #include "Collision.h"
 
+
 #include "Nave.h"
 #include "Background.h"
 #include "Proyectil_beam.h"
@@ -20,6 +21,7 @@
 #include "VidasLabel.h"
 #include "RondaLabel.h"
 #include "MainMenu.h"
+#include "PowerupsLabel.h"
 
 using namespace std;
 using namespace sf;
@@ -171,8 +173,8 @@ void subirRonda()
 	N_ENEMIGOS += 5;
 	N_ENEMIGOSLIP += 3;
 
-	time_power_dano = 5.f;
-	time_power_salud = 10.f;
+	time_power_dano = 20.f;
+	time_power_salud = 40.f;
 }
 
 
@@ -265,6 +267,7 @@ int main() {
 	DisparoLabel disparoLabel;
 	VidasLabel vidasLabel;
 	RondaLabel rondaLabel;
+	PowerupsLabel powerLabel;
 
 
 	sf::RenderWindow window(sf::VideoMode(800, 900), "SpaceShooter - P3");
@@ -323,7 +326,7 @@ int main() {
 		EnemyIndex I_Enemy = enemigos.begin();
 		EnemyIndex E_Enemy = enemigos.end();
 
-		bool danoMaximo = false;//isActivoDanoMaximo(powerUps);
+		bool danoMaximo = isActivoDanoMaximo(powerUps);
 
 		while (I_Enemy != E_Enemy)
 		{
@@ -346,7 +349,7 @@ int main() {
 				{
 					beam->kill();
 
-					enem->bajarHp((danoMaximo ? beamCharged_daño * 2 : beamCharged_daño));
+					enem->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
 
 					enem->moverPorImpacto(Retardos::Potente);
 					break;
@@ -370,7 +373,7 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp((danoMaximo ? bullet_daño * 2 : bullet_daño));
+					enem->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
 					enem->moverPorImpacto(Retardos::Normal);
 				}
 
@@ -421,7 +424,7 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp((danoMaximo ? beamCharged_daño * 2 : beamCharged_daño));
+					enem->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
 					enem->moverPorImpacto(Retardos::Potente);
 					break;
 				}
@@ -444,7 +447,7 @@ int main() {
 				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
 				{
 					beam->kill();
-					enem->bajarHp((danoMaximo ? bullet_daño * 2 : bullet_daño));
+					enem->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
 					enem->moverPorImpacto(Retardos::Normal);
 				}
 
@@ -497,7 +500,7 @@ int main() {
 
 		I_Power = powerUps.begin();
 		E_Power = powerUps.end();
-
+		
 		while (I_Power != E_Power)
 		{
 			PowerUps* p = (*I_Power);
@@ -512,10 +515,14 @@ int main() {
 				if (p->getTipo() == typePower::DanoMaximo)
 				{
 					p->activarPower(time_DanoMaximo);
+					powerLabel.mostrarDano();
 				}
 
 			}
+
+			++I_Power;
 		}
+		
 
 		// Process events
 		sf::Event event;
@@ -629,24 +636,26 @@ int main() {
 		I_Power = powerUps.begin();
 		E_Power = powerUps.end();
 
-		/*
 		while (I_Power != E_Power)
 		{
 			PowerUps* p = (*I_Power);
 			
-			if (p->isActivo())
+			if (p->isMostrar() || p->isActivo())
 			{
 				p->update(dt);
 				++I_Power;
+				continue;
 			}
-			else if(!p->isMostrar())
+			else
 			{
+				delete p;
 				I_Power = powerUps.erase(I_Power);
+				powerLabel.ocultarDano();
 			}
 
+			
 		}
 
-		*/
 
 		// A - Actualizmos las balas de los normales
 		BeamIndex I = beams.begin();
@@ -865,27 +874,35 @@ int main() {
 		vidasLabel.actualizarVidas(VIDAS);
 		vidasLabel.draw(window);
 
+		powerLabel.draw(window);
+
 		I_Power = powerUps.begin();
 		E_Power = powerUps.end();
 		
 		while (I_Power != E_Power)
 		{
 			PowerUps* p = (*I_Power);
-			p->draw(window);
+
+			if(p->isMostrar())
+				p->draw(window);
+
 			++I_Power;
 		}
-		
 
 		if (time_power_dano <= 0.f)
 		{
 			powerUps.push_back(new PowerUps(typePower::DanoMaximo));
+			time_power_dano = 80.f;
 		}
 
 		if (time_power_salud <= 0.f)
 		{
 			powerUps.push_back(new PowerUps(typePower::SaludMaxima));
+			time_power_salud = 120.f;
 		}
 
+		cout << "D: " << time_power_dano << endl;
+		cout << "V: " << time_power_salud;
 
 
 		// Update the window
