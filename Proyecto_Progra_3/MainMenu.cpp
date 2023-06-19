@@ -2,7 +2,7 @@
 
 MainMenu::MainMenu()
 {
-	if (!font.loadFromFile("Font\\SPACEBOY.TFF")) {
+	if (!font.loadFromFile("Font\\SPACEBOY.TTF")) {
 		cout << "e";
 }
 	Abierto = true;
@@ -11,28 +11,28 @@ MainMenu::MainMenu()
 	mainMenu[0].setFillColor(Color::White);
 	mainMenu[0].setString("Jugar");
 	mainMenu[0].setCharacterSize(70);
-	mainMenu[0].setPosition(400.f, 200.f);
+	mainMenu[0].setPosition(100.f, 200.f);
 
 	//Opciones
 	mainMenu[1].setFont(font);
 	mainMenu[1].setFillColor(Color::White);
 	mainMenu[1].setString("Opciones");
 	mainMenu[1].setCharacterSize(70);
-	mainMenu[1].setPosition(400.f, 300.f);
+	mainMenu[1].setPosition(100.f, 300.f);
 
 	//Records
 	mainMenu[2].setFont(font);
 	mainMenu[2].setFillColor(Color::White);
 	mainMenu[2].setString("Records");
 	mainMenu[2].setCharacterSize(70);
-	mainMenu[2].setPosition(400.f, 400.f);
+	mainMenu[2].setPosition(100.f, 400.f);
 
 	//Jugar
 	mainMenu[3].setFont(font);
 	mainMenu[3].setFillColor(Color::White);
-	mainMenu[3].setString("Jugar");
+	mainMenu[3].setString("Salir");
 	mainMenu[3].setCharacterSize(70);
-	mainMenu[3].setPosition(400.f, 500.f);
+	mainMenu[3].setPosition(100.f, 500.f);
 
 	MainMenuSelected = -1;
 }
@@ -47,13 +47,13 @@ void MainMenu::Draw(RenderWindow& rt)
 
 void MainMenu::MoveUp()
 {
-	if (MainMenuSelected - 1 >= 0) {
+	if (MainMenuSelected - 1 >= -1) {
 		mainMenu[MainMenuSelected].setFillColor(Color::White);
 
 		MainMenuSelected--;
 
 		if (MainMenuSelected == -1) {
-			MainMenuSelected = 2;
+			MainMenuSelected = 3;
 		}
 
 		mainMenu[MainMenuSelected].setFillColor(Color::Yellow);
