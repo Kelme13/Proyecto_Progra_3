@@ -194,6 +194,24 @@ void Menu(RenderWindow& rt) {
 
 				if (event.key.code == Keyboard::Return) {
 
+					int x = menu->MainMenuSelected;
+
+					if (x == 0) {
+						rt.clear();
+						return;
+					}
+					else if (x == 1) {
+						rt.clear();
+						return;
+					}
+					else if (x == 2) {
+
+					}
+					else if (x == 3) {
+						rt.close();
+					}
+
+
 				}
 
 
@@ -201,7 +219,10 @@ void Menu(RenderWindow& rt) {
 			}
 
 		}
-
+	
+		rt.clear();
+		menu->Draw(rt);
+		rt.display();
 
 	}
 
@@ -248,6 +269,9 @@ int main() {
 	//E - Contenedor de los enemigos Lip
 	EnemyLipList enemigosLip;
 
+
+	//Menu
+	Menu(window);
 
 	// Start the game loop
 	while (window.isOpen())
