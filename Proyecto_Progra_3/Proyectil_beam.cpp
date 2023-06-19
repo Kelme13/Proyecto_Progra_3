@@ -18,7 +18,7 @@ void Proyectil_beam::Draw(RenderTarget& rt) const
 
 }
 
-void Proyectil_beam::Update(float dt)
+void Proyectil_beam::Update(float dt, bool maximo)
 {
 
 	if (!m_is_alive) return;
@@ -32,7 +32,13 @@ void Proyectil_beam::Update(float dt)
 	pos += vel * dt;
 
 	spr.setPosition(pos);
-	spr.setScale(30.f / (float)spr.getTexture()->getSize().x, 30.f / (float)spr.getTexture()->getSize().y);
+
+	if (maximo) spr.setScale(40.f / (float)spr.getTexture()->getSize().x, 40.f / (float)spr.getTexture()->getSize().y);
+	else
+	{
+		spr.setScale(30.f / (float)spr.getTexture()->getSize().x, 30.f / (float)spr.getTexture()->getSize().y);
+	}
+	
 }
 
 

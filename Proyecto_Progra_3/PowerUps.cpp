@@ -34,7 +34,7 @@ void PowerUps::update(float dt)
 	pos += vel * dt;
 
 	spr.setPosition(pos);
-	spr.setScale(30.f / 16.f, 30.f / 16.f);
+	spr.setScale(50.f / 16.f, 50.f / 16.f);
 
 	time_power -= dt;
 }

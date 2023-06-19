@@ -72,7 +72,7 @@ public:
 	Proyectil_beam(Vector2f pos_i);
 
 	void Draw(RenderTarget& rt) const;
-	void Update(float dt);
+	void Update(float dt, bool maximo);
 
 	bool isAlive();
 	void kill();

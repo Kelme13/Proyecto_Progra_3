@@ -510,7 +510,11 @@ int main() {
 
 				p->noMostrar();
 
-				if (p->getTipo() == typePower::SaludMaxima) VIDAS = 5;
+				if (p->getTipo() == typePower::SaludMaxima)
+				{
+					VIDAS = 5;
+					vidasLabel.resetearVidas();
+				}
 
 				if (p->getTipo() == typePower::DanoMaximo)
 				{
@@ -666,7 +670,7 @@ int main() {
 
 			if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
 			{
-				beam->Update(dt);
+				beam->Update(dt, danoMaximo);
 				++I;
 			}
 			else // Si la bala ha muerto se elimina y se pasa a la siguiente
@@ -686,7 +690,7 @@ int main() {
 
 			if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
 			{
-				beam->Update(dt);
+				beam->Update(dt, danoMaximo);
 
 				++I_Charged;
 			}

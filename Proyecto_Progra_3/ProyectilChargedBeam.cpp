@@ -17,7 +17,7 @@ void ProyectilChargedBeam::Draw(RenderTarget& rt) const
 	rt.draw(spr);
 }
 
-void ProyectilChargedBeam::Update(float dt)
+void ProyectilChargedBeam::Update(float dt, bool maximo)
 {
 	if (!m_is_alive) return;
 
@@ -33,7 +33,13 @@ void ProyectilChargedBeam::Update(float dt)
 	animaciones.ApplyToSprite(spr);
 
 	spr.setPosition(pos);
-	spr.setScale(50.f / (float)spr.getTexture()->getSize().x, 50.f / (float)spr.getTexture()->getSize().y);
+
+	if(maximo)
+		spr.setScale(60.f / (float)spr.getTexture()->getSize().x, 60.f / (float)spr.getTexture()->getSize().y);
+	else
+	{
+		spr.setScale(50.f / (float)spr.getTexture()->getSize().x, 50.f / (float)spr.getTexture()->getSize().y);
+	}
 
 }
 
