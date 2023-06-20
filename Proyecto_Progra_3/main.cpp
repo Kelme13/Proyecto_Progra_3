@@ -180,11 +180,11 @@ void subirRonda()
 
 //Menu
 
-void Menu(RenderWindow& rt) {
+void Menu(RenderWindow& rt, bool& Abierto) {
 
 	MainMenu* menu = new MainMenu();
 
-	while (rt.isOpen() && menu->Abierto) {
+	while (rt.isOpen() && Abierto) {
 
 		Event event;
 		while (rt.pollEvent(event)) {
@@ -212,6 +212,7 @@ void Menu(RenderWindow& rt) {
 
 					if (x == 0) {
 						rt.clear();
+						Abierto = false;
 						return;
 					}
 					else if (x == 1) {
@@ -223,6 +224,7 @@ void Menu(RenderWindow& rt) {
 					}
 					else if (x == 3) {
 						rt.close();
+						Abierto = false;
 					}
 
 
@@ -302,14 +304,16 @@ int main() {
 	PowerUpIndex I_Power;
 	PowerUpIndex E_Power;
 
-
-
+	//Para que el window no corra al mismo tiempo
+	bool Abierto=true;
 	//Menu
-	Menu(window);
-
+	
 	// Start the game loop
-	while (window.isOpen())
+	while (window.isOpen() )
 	{
+		while (Abierto == true) {
+			Menu(window, Abierto);
+		}
 
 		if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip))
 		{
@@ -905,8 +909,8 @@ int main() {
 			time_power_salud = 120.f;
 		}
 
-		cout << "D: " << time_power_dano << endl;
-		cout << "V: " << time_power_salud;
+		std::cout << "D: " << time_power_dano << endl;
+		std::cout << "V: " << time_power_salud;
 
 
 		// Update the window
