@@ -50,6 +50,15 @@ typedef list<Enemy_Lip*>::iterator EnemyLipIndex;
 typedef list<PowerUps*> PowerUpsList;
 typedef list<PowerUps*>::iterator PowerUpIndex;
 
+enum Estados
+{
+	JUEGO,
+	MENU,
+	PAUSA
+};
+
+
+
 enum class Disparos
 {
 	Beam,
@@ -144,6 +153,21 @@ void generarBalasEnemigas(Enemy_Lip& enemy, EnemyBulletList& enemyBullets)
 
 }
 
+
+Estados estado = Estados::MENU;
+
+// Controles set
+
+sf::Keyboard::Key k_up = Keyboard::Up;
+sf::Keyboard::Key k_down = Keyboard::Down;
+sf::Keyboard::Key k_left = Keyboard::Left;
+sf::Keyboard::Key k_rigth = Keyboard::Right;
+
+sf::Keyboard::Key k_disparar = Keyboard::Space;
+sf::Keyboard::Key k_miniatura = Keyboard::LControl;
+sf::Keyboard::Key k_cambiarD = Keyboard::A;
+
+
 // PARAMETROS DURANTE EL JUEGO
 
 int RONDA = 0;
@@ -211,6 +235,7 @@ void Menu(RenderWindow& rt) {
 					int x = menu->MainMenuSelected;
 
 					if (x == 0) {
+						estado = Estados::JUEGO;
 						rt.clear();
 						return;
 					}
@@ -302,612 +327,644 @@ int main() {
 	PowerUpIndex I_Power;
 	PowerUpIndex E_Power;
 
-
-
-	//Menu
-	Menu(window);
+	float time_pausa = 0.f;
 
 	// Start the game loop
 	while (window.isOpen())
 	{
 
-		if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip))
+		if (estado == Estados::MENU)
 		{
-			subirRonda();
-			generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
-			rondaLabel.subirRonda(RONDA);
+			Menu(window);
 		}
 
-		/*
-		* Vamos aqui vamos a comprobar las colisiones antes de todo
-		*/
-
-		// Recorre todos los enemigos
-		EnemyIndex I_Enemy = enemigos.begin();
-		EnemyIndex E_Enemy = enemigos.end();
-
-		bool danoMaximo = isActivoDanoMaximo(powerUps);
-
-		while (I_Enemy != E_Enemy)
+		else if (estado == Estados::JUEGO)
 		{
-			Enemy* enem = (*I_Enemy);
 
-			// Recorre todas la balas - Cargadas
-			ChargedBeamIndex I = chargedBeams.begin();
-			ChargedBeamIndex E = chargedBeams.end();
-
-			while (I != E)
+			if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip))
 			{
-				ProyectilChargedBeam* beam = (*I);
-				if (!beam->isAlive())
+				subirRonda();
+				generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
+				rondaLabel.subirRonda(RONDA);
+			}
+
+			/*
+			* Vamos aqui vamos a comprobar las colisiones antes de todo
+			*/
+
+			// Recorre todos los enemigos
+			EnemyIndex I_Enemy = enemigos.begin();
+			EnemyIndex E_Enemy = enemigos.end();
+
+			bool danoMaximo = isActivoDanoMaximo(powerUps);
+
+			while (I_Enemy != E_Enemy)
+			{
+				Enemy* enem = (*I_Enemy);
+
+				// Recorre todas la balas - Cargadas
+				ChargedBeamIndex I = chargedBeams.begin();
+				ChargedBeamIndex E = chargedBeams.end();
+
+				while (I != E)
 				{
+					ProyectilChargedBeam* beam = (*I);
+					if (!beam->isAlive())
+					{
+						++I;
+						continue;
+					}
+
+					if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+					{
+						beam->kill();
+
+						enem->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
+
+						enem->moverPorImpacto(Retardos::Potente);
+						break;
+					}
+
 					++I;
-					continue;
-				}
+				};
 
-				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+				// Recorremos todas la balas normales
+				BeamIndex I_beam = beams.begin();
+				BeamIndex E_beam = beams.end();
+				while (I_beam != E_beam)
 				{
-					beam->kill();
-
-					enem->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
-
-					enem->moverPorImpacto(Retardos::Potente);
-					break;
-				}
-
-				++I;
-			};
-
-			// Recorremos todas la balas normales
-			BeamIndex I_beam = beams.begin();
-			BeamIndex E_beam = beams.end();
-			while (I_beam != E_beam)
-			{
-				Proyectil_beam* beam = (*I_beam);
-				if (!beam->isAlive())
-				{
-					++I_beam;
-					continue;
-				}
-
-				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
-				{
-					beam->kill();
-					enem->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
-					enem->moverPorImpacto(Retardos::Normal);
-				}
-
-				++I_beam;
-			}
-
-			if (enem->isAlive())
-			{
-				if (Collision::PixelPerfectTest(enem->spr, nave->getSprite()))
-				{
-					if (time_to_restar_vida <= 0.f)
+					Proyectil_beam* beam = (*I_beam);
+					if (!beam->isAlive())
 					{
-						nave->Golpearon();
-						VIDAS--;
-						time_to_restar_vida = 5.f;
+						++I_beam;
+						continue;
 					}
 
+					if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+					{
+						beam->kill();
+						enem->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
+						enem->moverPorImpacto(Retardos::Normal);
+					}
+
+					++I_beam;
 				}
+
+				if (enem->isAlive())
+				{
+					if (Collision::PixelPerfectTest(enem->spr, nave->getSprite()))
+					{
+						if (time_to_restar_vida <= 0.f)
+						{
+							nave->Golpearon();
+							VIDAS--;
+							time_to_restar_vida = 5.f;
+						}
+
+					}
+				}
+
+
+				++I_Enemy;
+
 			}
 
 
-			++I_Enemy;
+			// Recorre todos los enemigos que disparan
+			EnemyLipIndex I_EnemyLip = enemigosLip.begin();
+			EnemyLipIndex E_EnemyLip = enemigosLip.end();
 
-		}
-
-
-		// Recorre todos los enemigos que disparan
-		EnemyLipIndex I_EnemyLip = enemigosLip.begin();
-		EnemyLipIndex E_EnemyLip = enemigosLip.end();
-
-		while (I_EnemyLip != E_EnemyLip)
-		{
-			Enemy_Lip* enem = (*I_EnemyLip);
-
-			// Recorre todas la balas - Cargadas
-			ChargedBeamIndex I = chargedBeams.begin();
-			ChargedBeamIndex E = chargedBeams.end();
-
-			while (I != E)
+			while (I_EnemyLip != E_EnemyLip)
 			{
-				ProyectilChargedBeam* beam = (*I);
-				if (!beam->isAlive())
+				Enemy_Lip* enem = (*I_EnemyLip);
+
+				// Recorre todas la balas - Cargadas
+				ChargedBeamIndex I = chargedBeams.begin();
+				ChargedBeamIndex E = chargedBeams.end();
+
+				while (I != E)
 				{
+					ProyectilChargedBeam* beam = (*I);
+					if (!beam->isAlive())
+					{
+						++I;
+						continue;
+					}
+
+					if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+					{
+						beam->kill();
+						enem->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
+						enem->moverPorImpacto(Retardos::Potente);
+						break;
+					}
+
 					++I;
-					continue;
-				}
+				};
 
-				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+				// Recorremos todas la balas normales
+				BeamIndex I_beam = beams.begin();
+				BeamIndex E_beam = beams.end();
+				while (I_beam != E_beam)
 				{
-					beam->kill();
-					enem->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
-					enem->moverPorImpacto(Retardos::Potente);
-					break;
-				}
+					Proyectil_beam* beam = (*I_beam);
+					if (!beam->isAlive())
+					{
+						++I_beam;
+						continue;
+					}
 
-				++I;
-			};
+					if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+					{
+						beam->kill();
+						enem->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
+						enem->moverPorImpacto(Retardos::Normal);
+					}
 
-			// Recorremos todas la balas normales
-			BeamIndex I_beam = beams.begin();
-			BeamIndex E_beam = beams.end();
-			while (I_beam != E_beam)
-			{
-				Proyectil_beam* beam = (*I_beam);
-				if (!beam->isAlive())
-				{
 					++I_beam;
-					continue;
 				}
 
-				if (Collision::PixelPerfectTest(enem->spr, beam->getSprite()))
+				if (enem->isAlive())
 				{
-					beam->kill();
-					enem->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
-					enem->moverPorImpacto(Retardos::Normal);
-				}
-
-				++I_beam;
-			}
-
-			if (enem->isAlive())
-			{
-				if (Collision::PixelPerfectTest(enem->spr, nave->getSprite()))
-				{
-					if (time_to_restar_vida <= 0.f)
+					if (Collision::PixelPerfectTest(enem->spr, nave->getSprite()))
 					{
-						nave->Golpearon();
-						VIDAS--;
-						time_to_restar_vida = 5.f;
-					}
+						if (time_to_restar_vida <= 0.f)
+						{
+							nave->Golpearon();
+							VIDAS--;
+							time_to_restar_vida = 5.f;
+						}
 
-				}
-			}
-
-
-			++I_EnemyLip;
-		}
-
-		EnemyBulletIndex I_EnemyBullet = balasEnemigas.begin();
-		EnemyBulletIndex E_EnmeyBullet = balasEnemigas.end();
-
-		while (I_EnemyBullet != E_EnmeyBullet)
-		{
-			Enemy_Bullet* balaE = (*I_EnemyBullet);
-
-			if (balaE->isAlive())
-			{
-				if (Collision::PixelPerfectTest(nave->getSprite(), balaE->getSprite()))
-				{
-					if (time_to_restar_vida <= 0.f)
-					{
-						nave->Golpearon();
-						VIDAS--;
-						time_to_restar_vida = 5.f;
 					}
 				}
 
+
+				++I_EnemyLip;
 			}
 
-			++I_EnemyBullet;
-		}
+			EnemyBulletIndex I_EnemyBullet = balasEnemigas.begin();
+			EnemyBulletIndex E_EnmeyBullet = balasEnemigas.end();
 
-
-
-		I_Power = powerUps.begin();
-		E_Power = powerUps.end();
-		
-		while (I_Power != E_Power)
-		{
-			PowerUps* p = (*I_Power);
-
-			if (Collision::PixelPerfectTest(p->getSprite(), nave->getSprite()))
+			while (I_EnemyBullet != E_EnmeyBullet)
 			{
+				Enemy_Bullet* balaE = (*I_EnemyBullet);
 
-				p->noMostrar();
-
-				if (p->getTipo() == typePower::SaludMaxima)
+				if (balaE->isAlive())
 				{
-					VIDAS = 5;
-					vidasLabel.resetearVidas();
-				}
-
-				if (p->getTipo() == typePower::DanoMaximo)
-				{
-					p->activarPower(time_DanoMaximo);
-					powerLabel.mostrarDano();
-				}
-
-			}
-
-			++I_Power;
-		}
-		
-
-		// Process events
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			// Close window: exite
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		// get dt
-		float dt;
-		{
-			const auto new_tp = std::chrono::steady_clock::now();
-			dt = std::chrono::duration<float>(new_tp - tp).count();
-			tp = new_tp;
-		}
-
-		//A - Rutina de disparo cuando se pulsa espacion & se puede disparar
-		time_to_next_bullet -= dt;
-		time_to_next_bullet_charged -= dt;
-		time_to_cambiar_disparo -= dt;
-
-		time_power_dano -= dt;
-		time_power_salud -= dt;
-
-
-		// Espera un tiempo entre las pulsaciones para evitar posibles repeticiones
-		if (Keyboard::isKeyPressed(sf::Keyboard::A) && time_to_cambiar_disparo < 0.0f)
-		{
-			if (actualDisparo == Disparos::Beam)
-			{
-				actualDisparo = Disparos::Charged_Beam;
-				disparoLabel.cambiarDisparo();
-				time_to_cambiar_disparo = 0.2f;
-			}
-			else
-			{
-				actualDisparo = Disparos::Beam;
-				disparoLabel.cambiarDisparo();
-				time_to_cambiar_disparo = 0.2f;
-			}
-
-		}
-
-		if (Keyboard::isKeyPressed(sf::Keyboard::Space))
-		{
-
-			// Agregando balas a la lista
-
-			// Calculamos la posicion de la bala
-			sf::Vector2f posicion = nave->getPos();
-
-			// movemos la posicion de la bala hasta la punta de la nave;
-			posicion = { posicion.x + 3 , posicion.y - 20 };
-
-
-			if (actualDisparo == Disparos::Beam && time_to_next_bullet < 0.0f)
-			{
-				time_to_next_bullet = bullet_shoot_speed_seconds; // reseteamos la frecuencia del disparo
-				// Creamos la bala y la almacenamos
-				Proyectil_beam* newBeam = new Proyectil_beam(posicion);
-				if (newBeam) beams.push_back(newBeam);
-
-			}
-
-			if (actualDisparo == Disparos::Charged_Beam && time_to_next_bullet_charged < 0.0f)
-			{
-				time_to_next_bullet_charged = beamCharged_shoot_speed_seconds;
-
-				// Creamos la bala y la almacenamos (Charged)
-				ProyectilChargedBeam* newChargedBeam = new ProyectilChargedBeam(posicion);
-				if (newChargedBeam) chargedBeams.push_back(newChargedBeam);
-			}
-
-		}
-
-		// handle input
-		sf::Vector2f dir = { 0.f,0.f };
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			dir.y -= 1.0f;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			dir.y += 1.0f;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			dir.x += 1.0f;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			dir.x -= 1.0f;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-		{
-			nave->Miniatura();
-		}
-		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-		{
-			nave->Normal();
-		}
-
-
-		nave->SetDireccion(dir);
-
-		// update nave
-		nave->Update(dt);
-
-		I_Power = powerUps.begin();
-		E_Power = powerUps.end();
-
-		while (I_Power != E_Power)
-		{
-			PowerUps* p = (*I_Power);
-			
-			if (p->isMostrar() || p->isActivo())
-			{
-				p->update(dt);
-				++I_Power;
-				continue;
-			}
-			else
-			{
-				delete p;
-				I_Power = powerUps.erase(I_Power);
-				powerLabel.ocultarDano();
-			}
-
-			
-		}
-
-
-		// A - Actualizmos las balas de los normales
-		BeamIndex I = beams.begin();
-		BeamIndex E = beams.end();
-		while (I != E)
-		{
-			Proyectil_beam* beam = (*I);
-
-			if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
-			{
-				beam->Update(dt, danoMaximo);
-				++I;
-			}
-			else // Si la bala ha muerto se elimina y se pasa a la siguiente
-			{
-				delete beam;
-				I = beams.erase(I);
-			}
-		};
-
-
-		// B - Actualizmos las balas de las cargadas
-		ChargedBeamIndex I_Charged = chargedBeams.begin();
-		ChargedBeamIndex E_Charged = chargedBeams.end();
-		while (I_Charged != E_Charged)
-		{
-			ProyectilChargedBeam* beam = (*I_Charged);
-
-			if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
-			{
-				beam->Update(dt, danoMaximo);
-
-				++I_Charged;
-			}
-			else // Si la bala ha muerto se elimina y se pasa a la siguiente
-			{
-				delete beam;
-				I_Charged = chargedBeams.erase(I_Charged);
-			}
-		};
-
-		// C
-		I_Enemy = enemigos.begin();
-		E_Enemy = enemigos.end();
-		while (I_Enemy != E_Enemy)
-		{
-			Enemy* enemigo = (*I_Enemy);
-
-			if (enemigo->isAlive())
-			{
-				enemigo->Update(dt, nave->getPos());
-				//Genera las balas
-
-				// validaciones para que no se escape de la pantalla en x
-				if (enemigo->getPosition().x >= 4.f && enemigo->getPosition().x <= 757.f) {
-					if (enemigo->getPosition().y >= 0.5f && enemigo->getPosition().x <= 851.5f) {
-
-						enemigo->time_to_next_enemybullet -= dt;
-						if (enemigo->time_to_next_enemybullet <= 0) {
-
-							//generarBalasEnemigas(*enemigo, balasEnemigas);
-							enemigo->time_to_next_enemybullet = enemigo->frequencyBullet;
+					if (Collision::PixelPerfectTest(nave->getSprite(), balaE->getSprite()))
+					{
+						if (time_to_restar_vida <= 0.f)
+						{
+							nave->Golpearon();
+							VIDAS--;
+							time_to_restar_vida = 5.f;
 						}
 					}
+
 				}
 
-				if (!enemigo->isAlive())
+				++I_EnemyBullet;
+			}
+
+
+
+			I_Power = powerUps.begin();
+			E_Power = powerUps.end();
+
+			while (I_Power != E_Power)
+			{
+				PowerUps* p = (*I_Power);
+
+				if (Collision::PixelPerfectTest(p->getSprite(), nave->getSprite()))
+				{
+
+					p->noMostrar();
+
+					if (p->getTipo() == typePower::SaludMaxima)
+					{
+						VIDAS = 5;
+						vidasLabel.resetearVidas();
+					}
+
+					if (p->getTipo() == typePower::DanoMaximo)
+					{
+						p->activarPower(time_DanoMaximo);
+						powerLabel.mostrarDano();
+					}
+
+				}
+
+				++I_Power;
+			}
+
+
+			// Process events
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				// Close window: exite
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			// get dt
+			float dt;
+			{
+				const auto new_tp = std::chrono::steady_clock::now();
+				dt = std::chrono::duration<float>(new_tp - tp).count();
+				tp = new_tp;
+			}
+
+			//A - Rutina de disparo cuando se pulsa espacion & se puede disparar
+			time_to_next_bullet -= dt;
+			time_to_next_bullet_charged -= dt;
+			time_to_cambiar_disparo -= dt;
+
+			time_power_dano -= dt;
+			time_power_salud -= dt;
+
+
+			// Espera un tiempo entre las pulsaciones para evitar posibles repeticiones
+			if (Keyboard::isKeyPressed(sf::Keyboard::A) && time_to_cambiar_disparo < 0.0f)
+			{
+				if (actualDisparo == Disparos::Beam)
+				{
+					actualDisparo = Disparos::Charged_Beam;
+					disparoLabel.cambiarDisparo();
+					time_to_cambiar_disparo = 0.2f;
+				}
+				else
+				{
+					actualDisparo = Disparos::Beam;
+					disparoLabel.cambiarDisparo();
+					time_to_cambiar_disparo = 0.2f;
+				}
+
+			}
+
+			if (Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+
+				// Agregando balas a la lista
+
+				// Calculamos la posicion de la bala
+				sf::Vector2f posicion = nave->getPos();
+
+				// movemos la posicion de la bala hasta la punta de la nave;
+				posicion = { posicion.x + 3 , posicion.y - 20 };
+
+
+				if (actualDisparo == Disparos::Beam && time_to_next_bullet < 0.0f)
+				{
+					time_to_next_bullet = bullet_shoot_speed_seconds; // reseteamos la frecuencia del disparo
+					// Creamos la bala y la almacenamos
+					Proyectil_beam* newBeam = new Proyectil_beam(posicion);
+					if (newBeam) beams.push_back(newBeam);
+
+				}
+
+				if (actualDisparo == Disparos::Charged_Beam && time_to_next_bullet_charged < 0.0f)
+				{
+					time_to_next_bullet_charged = beamCharged_shoot_speed_seconds;
+
+					// Creamos la bala y la almacenamos (Charged)
+					ProyectilChargedBeam* newChargedBeam = new ProyectilChargedBeam(posicion);
+					if (newChargedBeam) chargedBeams.push_back(newChargedBeam);
+				}
+
+			}
+
+			// handle input
+			sf::Vector2f dir = { 0.f,0.f };
+			if (sf::Keyboard::isKeyPressed(k_up))
+			{
+				dir.y -= 1.0f;
+			}
+			if (sf::Keyboard::isKeyPressed(k_down))
+			{
+				dir.y += 1.0f;
+			}
+			if (sf::Keyboard::isKeyPressed(k_rigth))
+			{
+				dir.x += 1.0f;
+			}
+			if (sf::Keyboard::isKeyPressed(k_left))
+			{
+				dir.x -= 1.0f;
+			}
+			if (sf::Keyboard::isKeyPressed(k_miniatura))
+			{
+				nave->Miniatura();
+			}
+			if (!sf::Keyboard::isKeyPressed(k_miniatura))
+			{
+				nave->Normal();
+			}
+			// Pausa
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				estado = Estados::PAUSA;
+			}
+
+
+			nave->SetDireccion(dir);
+
+			// update nave
+			nave->Update(dt);
+
+
+			I_Power = powerUps.begin();
+			E_Power = powerUps.end();
+
+			while (I_Power != E_Power)
+			{
+				PowerUps* p = (*I_Power);
+
+				if (p->isMostrar() || p->isActivo())
+				{
+					p->update(dt);
+					++I_Power;
+					continue;
+				}
+				else
+				{
+					delete p;
+					I_Power = powerUps.erase(I_Power);
+					powerLabel.ocultarDano();
+				}
+
+
+			}
+
+
+			// A - Actualizmos las balas de los normales
+			BeamIndex I = beams.begin();
+			BeamIndex E = beams.end();
+			while (I != E)
+			{
+				Proyectil_beam* beam = (*I);
+
+				if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
+				{
+					beam->Update(dt, danoMaximo);
+					++I;
+				}
+				else // Si la bala ha muerto se elimina y se pasa a la siguiente
+				{
+					delete beam;
+					I = beams.erase(I);
+				}
+			};
+
+
+			// B - Actualizmos las balas de las cargadas
+			ChargedBeamIndex I_Charged = chargedBeams.begin();
+			ChargedBeamIndex E_Charged = chargedBeams.end();
+			while (I_Charged != E_Charged)
+			{
+				ProyectilChargedBeam* beam = (*I_Charged);
+
+				if (beam->isAlive()) // Si la bala sigue viva se actualiza y pasamos a la siguiente
+				{
+					beam->Update(dt, danoMaximo);
+
+					++I_Charged;
+				}
+				else // Si la bala ha muerto se elimina y se pasa a la siguiente
+				{
+					delete beam;
+					I_Charged = chargedBeams.erase(I_Charged);
+				}
+			};
+
+			// C
+			I_Enemy = enemigos.begin();
+			E_Enemy = enemigos.end();
+			while (I_Enemy != E_Enemy)
+			{
+				Enemy* enemigo = (*I_Enemy);
+
+				if (enemigo->isAlive())
+				{
+					enemigo->Update(dt, nave->getPos());
+					//Genera las balas
+
+					// validaciones para que no se escape de la pantalla en x
+					if (enemigo->getPosition().x >= 4.f && enemigo->getPosition().x <= 757.f) {
+						if (enemigo->getPosition().y >= 0.5f && enemigo->getPosition().x <= 851.5f) {
+
+							enemigo->time_to_next_enemybullet -= dt;
+							if (enemigo->time_to_next_enemybullet <= 0) {
+
+								//generarBalasEnemigas(*enemigo, balasEnemigas);
+								enemigo->time_to_next_enemybullet = enemigo->frequencyBullet;
+							}
+						}
+					}
+
+					if (!enemigo->isAlive())
+					{
+						delete enemigo;
+						I_Enemy = enemigos.erase(I_Enemy);
+					}
+					else
+					{
+						++I_Enemy;
+					}
+				}
+				else
 				{
 					delete enemigo;
 					I_Enemy = enemigos.erase(I_Enemy);
 				}
-				else
+			}
+
+
+
+			// Recorre la lista de enemigos y las balas
+			I_EnemyLip = enemigosLip.begin();
+			E_EnemyLip = enemigosLip.end();
+
+			while (I_EnemyLip != E_EnemyLip)
+			{
+				Enemy_Lip* enemigo = (*I_EnemyLip);
+
+				if (enemigo->isAlive())
 				{
-					++I_Enemy;
-				}
-			}
-			else
-			{
-				delete enemigo;
-				I_Enemy = enemigos.erase(I_Enemy);
-			}
-		}
+					enemigo->Update(dt, nave->getPos());
+					//Genera las balas
 
+					// validaciones para que no se escape de la pantalla en x
+					if (enemigo->getPosition().x >= 4.f && enemigo->getPosition().x <= 757.f) {
+						if (enemigo->getPosition().y >= 0.5f && enemigo->getPosition().x <= 851.5f) {
 
+							enemigo->time_to_next_enemybullet -= dt;
+							if (enemigo->time_to_next_enemybullet <= 0) {
 
-		// Recorre la lista de enemigos y las balas
-		I_EnemyLip = enemigosLip.begin();
-		E_EnemyLip = enemigosLip.end();
-
-		while (I_EnemyLip != E_EnemyLip)
-		{
-			Enemy_Lip* enemigo = (*I_EnemyLip);
-
-			if (enemigo->isAlive())
-			{
-				enemigo->Update(dt, nave->getPos());
-				//Genera las balas
-
-				// validaciones para que no se escape de la pantalla en x
-				if (enemigo->getPosition().x >= 4.f && enemigo->getPosition().x <= 757.f) {
-					if (enemigo->getPosition().y >= 0.5f && enemigo->getPosition().x <= 851.5f) {
-
-						enemigo->time_to_next_enemybullet -= dt;
-						if (enemigo->time_to_next_enemybullet <= 0) {
-
-							generarBalasEnemigas(*enemigo, balasEnemigas);
-							enemigo->time_to_next_enemybullet = enemigo->frequencyBullet;
+								generarBalasEnemigas(*enemigo, balasEnemigas);
+								enemigo->time_to_next_enemybullet = enemigo->frequencyBullet;
+							}
 						}
 					}
-				}
 
-				if (!enemigo->isAlive())
+					if (!enemigo->isAlive())
+					{
+						delete enemigo;
+						I_EnemyLip = enemigosLip.erase(I_EnemyLip);
+					}
+					else
+					{
+						++I_EnemyLip;
+					}
+				}
+				else
 				{
 					delete enemigo;
 					I_EnemyLip = enemigosLip.erase(I_EnemyLip);
 				}
+			}
+			// Clear screen
+			window.clear();
+
+			// Draw the sprite
+			BG->Draw(window);
+			nave->Draw(window);
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+			{
+				nave->ShowHitbox(window);
+
+			}
+
+
+			// A - Recorremos la lista de balas y las dibujamos
+			I = beams.begin();
+			E = beams.end();
+
+
+			while (I != E)
+			{
+				Proyectil_beam* beam = (*I);
+
+				beam->Draw(window);
+				++I;
+			}
+
+
+			// B - recorre la lista de balas Charged
+			I_Charged = chargedBeams.begin();
+			E_Charged = chargedBeams.end();
+
+			while (I_Charged != E_Charged)
+			{
+				ProyectilChargedBeam* beam = (*I_Charged);
+				beam->Draw(window);
+
+				++I_Charged;
+			}
+
+			// C - recorre la lista de enemigos
+			I_Enemy = enemigos.begin();
+			E_Enemy = enemigos.end();
+
+			while (I_Enemy != E_Enemy)
+			{
+				Enemy* enemigo = (*I_Enemy);
+				enemigo->Draw(window);
+
+				++I_Enemy;
+			}
+
+			// D - recorre la lista de balas enemigas
+			EnemyBulletIndex I_Bullet = balasEnemigas.begin();
+			EnemyBulletIndex E_Bullet = balasEnemigas.end();
+			while (I_Bullet != E_Bullet)
+			{
+				Enemy_Bullet* bullet = (*I_Bullet);
+
+				bullet->Update(dt);
+
+				if (!bullet->isAlive())
+				{
+					delete bullet;
+					I_Bullet = balasEnemigas.erase(I_Bullet);
+				}
 				else
 				{
-					++I_EnemyLip;
+					bullet->Draw(window);
+					++I_Bullet;
 				}
 			}
-			else
+
+			// Dibujamos los enemigos que disparan
+			I_EnemyLip = enemigosLip.begin();
+			E_EnemyLip = enemigosLip.end();
+
+			while (I_EnemyLip != E_EnemyLip)
 			{
-				delete enemigo;
-				I_EnemyLip = enemigosLip.erase(I_EnemyLip);
+				Enemy_Lip* enemigo = (*I_EnemyLip);
+				enemigo->Draw(window);
+				++I_EnemyLip;
 			}
-		}
-		// Clear screen
-		window.clear();
 
-		// Draw the sprite
-		BG->Draw(window);
-		nave->Draw(window);
+			disparoLabel.draw(window);
+			rondaLabel.draw(window);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-		{
-			nave->ShowHitbox(window);
+			time_to_restar_vida -= dt;
+			vidasLabel.actualizarVidas(VIDAS);
+			vidasLabel.draw(window);
 
-		}
+			powerLabel.draw(window);
 
+			I_Power = powerUps.begin();
+			E_Power = powerUps.end();
 
-		// A - Recorremos la lista de balas y las dibujamos
-		I = beams.begin();
-		E = beams.end();
-
-
-		while (I != E)
-		{
-			Proyectil_beam* beam = (*I);
-
-			beam->Draw(window);
-			++I;
-		}
-
-
-		// B - recorre la lista de balas Charged
-		I_Charged = chargedBeams.begin();
-		E_Charged = chargedBeams.end();
-
-		while (I_Charged != E_Charged)
-		{
-			ProyectilChargedBeam* beam = (*I_Charged);
-			beam->Draw(window);
-
-			++I_Charged;
-		}
-
-		// C - recorre la lista de enemigos
-		I_Enemy = enemigos.begin();
-		E_Enemy = enemigos.end();
-
-		while (I_Enemy != E_Enemy)
-		{
-			Enemy* enemigo = (*I_Enemy);
-			enemigo->Draw(window);
-
-			++I_Enemy;
-		}
-
-		// D - recorre la lista de balas enemigas
-		EnemyBulletIndex I_Bullet = balasEnemigas.begin();
-		EnemyBulletIndex E_Bullet = balasEnemigas.end();
-		while (I_Bullet != E_Bullet)
-		{
-			Enemy_Bullet* bullet = (*I_Bullet);
-
-			bullet->Update(dt);
-
-			if (!bullet->isAlive())
+			while (I_Power != E_Power)
 			{
-				delete bullet;
-				I_Bullet = balasEnemigas.erase(I_Bullet);
+				PowerUps* p = (*I_Power);
+
+				if (p->isMostrar())
+					p->draw(window);
+
+				++I_Power;
 			}
-			else
+
+			if (time_power_dano <= 0.f)
 			{
-				bullet->Draw(window);
-				++I_Bullet;
+				powerUps.push_back(new PowerUps(typePower::DanoMaximo));
+				time_power_dano = 80.f;
 			}
+
+			if (time_power_salud <= 0.f)
+			{
+				powerUps.push_back(new PowerUps(typePower::SaludMaxima));
+				time_power_salud = 120.f;
+			}
+
 		}
 
-		// Dibujamos los enemigos que disparan
-		I_EnemyLip = enemigosLip.begin();
-		E_EnemyLip = enemigosLip.end();
-
-		while (I_EnemyLip != E_EnemyLip)
+		else if (estado == Estados::PAUSA)
 		{
-			Enemy_Lip* enemigo = (*I_EnemyLip);
-			enemigo->Draw(window);
-			++I_EnemyLip;
+			// Process events
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				// Close window: exite
+				if (event.type == sf::Event::Closed)
+					window.close();
+
+				if (event.type == Event::KeyReleased)
+				{
+
+					if (event.key.code == Keyboard::Return)
+					{
+						estado = Estados::JUEGO;
+						break;
+					}
+				}
+			}
+
 		}
-
-		disparoLabel.draw(window);
-		rondaLabel.draw(window);
-
-		time_to_restar_vida -= dt;
-		vidasLabel.actualizarVidas(VIDAS);
-		vidasLabel.draw(window);
-
-		powerLabel.draw(window);
-
-		I_Power = powerUps.begin();
-		E_Power = powerUps.end();
-		
-		while (I_Power != E_Power)
-		{
-			PowerUps* p = (*I_Power);
-
-			if(p->isMostrar())
-				p->draw(window);
-
-			++I_Power;
-		}
-
-		if (time_power_dano <= 0.f)
-		{
-			powerUps.push_back(new PowerUps(typePower::DanoMaximo));
-			time_power_dano = 80.f;
-		}
-
-		if (time_power_salud <= 0.f)
-		{
-			powerUps.push_back(new PowerUps(typePower::SaludMaxima));
-			time_power_salud = 120.f;
-		}
-
-		cout << "D: " << time_power_dano << endl;
-		cout << "V: " << time_power_salud;
-
 
 		// Update the window
 		window.display();
