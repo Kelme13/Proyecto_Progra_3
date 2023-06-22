@@ -104,6 +104,5 @@ private:
 
 	
 	int faseActual = 1;
-
 };
 

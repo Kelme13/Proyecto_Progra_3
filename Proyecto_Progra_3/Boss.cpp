@@ -81,34 +81,71 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 	if (!Aparecer(0.f))
 	{
 
-		int x_espacio = 0;
 
 		if (time_fase <= 0.f)
 		{
-			time_fase = 5.f;
+			time_fase = 15.f;
 			Vector2f pos = { 0.f, 0.f };
 
-			int cont_x = 1;
-			int cont_y = 1;
 
-			for (int i = 1; i < 500; i++)
+			if (faseActual == 1)
 			{
 
-				if (cont_x != x_espacio && cont_x != x_espacio + 1 && cont_x != x_espacio + 2 && cont_x != x_espacio + 3)
+				int x_espacio = 0;
+
+				int cont_x = 1;
+				int cont_y = 1;
+
+				for (int i = 1; i < 500; i++)
 				{
-					if (cont_x * 31.f > 800.f)
+
+					if (cont_x != x_espacio && cont_x != x_espacio + 1 && cont_x != x_espacio + 2 && cont_x != x_espacio + 3)
 					{
-						cont_x = 0;
-						cont_y++;
-						x_espacio++;
+						if (cont_x * 31.f > 800.f)
+						{
+							cont_x = 0;
+							cont_y++;
+							x_espacio++;
+						}
+						pos = { cont_x * 30.f + 6.f , -50.f - cont_y * 30.f - 10.f };
+						EnemyBulletList.push_back(new Enemy_Bullet(pos, 8.f));
 					}
-					pos = { cont_x * 30.f + 6.f , -50.f - cont_y * 30.f - 10.f };
-					EnemyBulletList.push_back(new Enemy_Bullet(pos, 8.f));
+
+					cont_x++;
 				}
 
+				faseActual = 2;
 
-				cont_x++;
 			}
+			else if(faseActual == 2)
+			{
+				int x_espacio = 26;
+
+				int cont_x = 1;
+				int cont_y = 1;
+
+				for (int i = 1; i < 500; i++)
+				{
+
+					if (cont_x != x_espacio && cont_x != x_espacio - 1 && cont_x != x_espacio - 2 && cont_x != x_espacio - 3)
+					{
+						if (cont_x * 31.f > 800.f)
+						{
+							cont_x = 0;
+							cont_y++;
+							x_espacio--;
+						}
+						pos = { cont_x * 30.f + 6.f , -50.f - cont_y * 30.f - 10.f };
+						EnemyBulletList.push_back(new Enemy_Bullet(pos, 8.f));
+					}
+
+					cont_x++;
+				}
+
+				faseActual = 2;
+			}
+
+			
 
 		}
 		else
