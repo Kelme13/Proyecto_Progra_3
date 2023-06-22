@@ -69,6 +69,8 @@ class Boss
 public:
 	//Atributos
 	float Speed = 25.f;
+
+
 	int HP;
 	int MaxHP;
 	int BarrasVida;
@@ -79,9 +81,8 @@ public:
 
 	Boss(int hp, int barras, Vector2f pos);
 	//Variable para balas
-	float time_to_next_enemybullet;
-
-	float frequencyBullet = 1.f;
+	float time_to_next_bossBullet = 0.0f;
+	const float frequencyBulletBoss = 1.f;
 
 	bool Aparecer(float dt);
 	bool isAlive();

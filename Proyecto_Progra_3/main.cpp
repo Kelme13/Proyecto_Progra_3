@@ -325,7 +325,7 @@ int main() {
 	// Load a sprite to display
 
 	Vector2f pos_centro = { window.getSize().x / 2.f, window.getSize().y - 100.f };
-	Vector2f posJefe = { window.getSize().x / 2.f - 100.f, window.getSize().y - 1200.f };
+	Vector2f posJefe = { window.getSize().x / 2.f - 100.f, window.getSize().y - 1000.f };
 		
 	Nave* nave = new Nave(pos_centro);
 
@@ -873,8 +873,14 @@ int main() {
 				if (b->isAlive())
 				{
 					b->Update(dt);
+					b->time_to_next_bossBullet -= dt;
 
-					b->Shoot(balasEnemigas);
+					if (b->time_to_next_bossBullet <= 0.f)
+					{
+						b->Shoot(balasEnemigas);
+						b->time_to_next_bossBullet = b->frequencyBulletBoss;
+					}
+					
 				}
 
 				++Ib;

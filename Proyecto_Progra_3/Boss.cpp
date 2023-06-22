@@ -8,7 +8,6 @@ Boss::Boss(int hp, int barras, Vector2f pos)
 	this->Pos = pos;
 	
 	texture.loadFromFile("Assets\\Mini Pixel Pack 3\\Enemies\\Bon_Bon (16 x 16).png");
-	time_to_next_enemybullet = 0.0f;
 	BossAlive = true;
 
 	spr.setTexture(texture);
