@@ -537,6 +537,9 @@ int main() {
 				++I_EnemyLip;
 			}
 
+			//Para los jefes
+
+
 			EnemyBulletIndex I_EnemyBullet = balasEnemigas.begin();
 			EnemyBulletIndex E_EnmeyBullet = balasEnemigas.end();
 
@@ -858,6 +861,9 @@ int main() {
 					I_EnemyLip = enemigosLip.erase(I_EnemyLip);
 				}
 			}
+
+
+
 			// Clear screen
 			window.clear();
 
