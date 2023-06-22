@@ -68,6 +68,7 @@ class Boss
 
 public:
 	//Atributos
+	float Speed = 25.f;
 	int HP;
 	int MaxHP;
 	int BarrasVida;
@@ -82,7 +83,7 @@ public:
 
 	float frequencyBullet = 1.f;
 
-	bool Aparecer();
+	bool Aparecer(float dt);
 	bool isAlive();
 	void bajarHp(int daño);
 	void Draw(RenderTarget& rt) const;

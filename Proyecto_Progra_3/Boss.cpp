@@ -18,17 +18,19 @@ Boss::Boss(int hp, int barras, Vector2f pos)
 
 }
 
-bool Boss::Aparecer()
+bool Boss::Aparecer(float dt)
 {
 
-	if (Pos.y >= 700.0f) {
-		spr.move(0.0f, 10.0f);
+	if (spr.getPosition().y <= 150.0f) {
+		spr.move(0.0f, dt * Speed);
+		return true;
 	}
 	else {
 		spr.move(0.0f, 0.0f);
+		return false;
 	}
 
-	return true;
+	
 }
 
 bool Boss::isAlive()
@@ -71,77 +73,84 @@ void Boss::Update(float dt)
 		animation.Update(dt);
 		animation.ApplyToSprite(spr);
 	}
+
+	this->Aparecer(dt);
 }
 
 void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 {
-	//Diferentes patrones
-	int random = 1 + (rand() % 3);
-	Vector2f pos1;
-	Vector2f pos2;
-	Vector2f pos3;
+	if (!Aparecer(0.f))
+	{
+		//Diferentes patrones
+		int random = 1 + (rand() % 3);
+		Vector2f pos1;
+		Vector2f pos2;
+		Vector2f pos3;
 
-	Enemy_Bullet* bul1;
-	Enemy_Bullet* bul2;
-	Enemy_Bullet* bul3;
+		Enemy_Bullet* bul1;
+		Enemy_Bullet* bul2;
+		Enemy_Bullet* bul3;
 
-	switch (random) {
+		switch (random) {
 
-	case 1:
-		pos1 = { this->getPosition().x + 2, this->getPosition().y };
-		 pos2 = { this->getPosition().x + 6, this->getPosition().y };
-		 pos3 = { this->getPosition().x + 9, this->getPosition().y };
+		case 1:
+			pos1 = { this->getPosition().x + 2, this->getPosition().y };
+			pos2 = { this->getPosition().x + 6, this->getPosition().y };
+			pos3 = { this->getPosition().x + 9, this->getPosition().y };
 
-		bul1 = new Enemy_Bullet(pos1);
-		bul1->getSprite().rotate(-15);
+			bul1 = new Enemy_Bullet(pos1);
+			bul1->getSprite().rotate(-15);
 
-	bul2 = new Enemy_Bullet(pos2);
-	
-	bul3 = new Enemy_Bullet(pos3);
-		bul3->getSprite().rotate(15);
+			bul2 = new Enemy_Bullet(pos2);
 
-		EnemyBulletList.push_back(bul1);
-		EnemyBulletList.push_back(bul2);
-		EnemyBulletList.push_back(bul3);
-		break;
+			bul3 = new Enemy_Bullet(pos3);
+			bul3->getSprite().rotate(15);
 
-	case 2:
+			EnemyBulletList.push_back(bul1);
+			EnemyBulletList.push_back(bul2);
+			EnemyBulletList.push_back(bul3);
+			break;
 
-		 pos1 = { this->getPosition().x, this->getPosition().y };
-		 pos2 = { this->getPosition().x + 6, this->getPosition().y };
-		pos3 = { this->getPosition().x + 10, this->getPosition().y };
+		case 2:
 
-		 bul1 = new Enemy_Bullet(pos1);
-		bul1->getSprite().rotate(-20);
+			pos1 = { this->getPosition().x, this->getPosition().y };
+			pos2 = { this->getPosition().x + 6, this->getPosition().y };
+			pos3 = { this->getPosition().x + 10, this->getPosition().y };
 
-		 bul2 = new Enemy_Bullet(pos2);
+			bul1 = new Enemy_Bullet(pos1);
+			bul1->getSprite().rotate(-20);
 
-		 bul3 = new Enemy_Bullet(pos3);
-		bul3->getSprite().rotate(20);
+			bul2 = new Enemy_Bullet(pos2);
 
-		EnemyBulletList.push_back(bul1);
-		EnemyBulletList.push_back(bul2);
-		EnemyBulletList.push_back(bul3);
-		break;
+			bul3 = new Enemy_Bullet(pos3);
+			bul3->getSprite().rotate(20);
+
+			EnemyBulletList.push_back(bul1);
+			EnemyBulletList.push_back(bul2);
+			EnemyBulletList.push_back(bul3);
+			break;
 
 
-	case 3:
-		 pos1 = { this->getPosition().x + 4, this->getPosition().y };
-		 pos2 = { this->getPosition().x + 6, this->getPosition().y };
-		 pos3 = { this->getPosition().x + 8, this->getPosition().y };
+		case 3:
+			pos1 = { this->getPosition().x + 4, this->getPosition().y };
+			pos2 = { this->getPosition().x + 6, this->getPosition().y };
+			pos3 = { this->getPosition().x + 8, this->getPosition().y };
 
-	    bul1 = new Enemy_Bullet(pos1);
-		bul1->getSprite().rotate(-10);
+			bul1 = new Enemy_Bullet(pos1);
+			bul1->getSprite().rotate(-10);
 
-	 bul2 = new Enemy_Bullet(pos2);
+			bul2 = new Enemy_Bullet(pos2);
 
-			 bul3 = new Enemy_Bullet(pos3);
-		bul3->getSprite().rotate(10);
+			bul3 = new Enemy_Bullet(pos3);
+			bul3->getSprite().rotate(10);
 
-		EnemyBulletList.push_back(bul1);
-		EnemyBulletList.push_back(bul2);
-		EnemyBulletList.push_back(bul3);
-		break;
-		
+			EnemyBulletList.push_back(bul1);
+			EnemyBulletList.push_back(bul2);
+			EnemyBulletList.push_back(bul3);
+			break;
+
+		}
 	}
+
+	
 }

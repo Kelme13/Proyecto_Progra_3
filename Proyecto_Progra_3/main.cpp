@@ -159,6 +159,7 @@ bool hayJefe(list<Boss*>& boss) {
 	while (I != E) {
 		Boss* b = (*I);
 		if (b->isAlive()) return true;
+		++I;
 	}
 
 	return false;
@@ -193,7 +194,7 @@ sf::Keyboard::Key k_cambiarD = Keyboard::A;
 
 // PARAMETROS DURANTE EL JUEGO
 
-int RONDA = 0;
+int RONDA = 4;
 int N_ENEMIGOS = 10;
 int N_ENEMIGOSLIP = 2;
 
@@ -309,7 +310,6 @@ bool isActivoDanoMaximo(PowerUpsList& lista)
 	return false;
 }
 
-void resetearJuego();
 
 int main() {
 
@@ -325,8 +325,8 @@ int main() {
 	// Load a sprite to display
 
 	Vector2f pos_centro = { window.getSize().x / 2.f, window.getSize().y - 100.f };
-	Vector2f posJefe = { window.getSize().x / 2.f, window.getSize().y - 2000.f };
-
+	Vector2f posJefe = { window.getSize().x / 2.f - 100.f, window.getSize().y - 1200.f };
+		
 	Nave* nave = new Nave(pos_centro);
 
 
@@ -371,12 +371,18 @@ int main() {
 		else if (estado == Estados::JUEGO)
 		{
 			
-
 			if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip) && !hayJefe(bosses))
 			{
 				subirRonda();
-				//generarJefe(bosses, posJefe);
-				generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
+
+				if (RONDA % 5 == 0)
+				{
+					generarJefe(bosses, posJefe);
+				}
+				else
+				{
+					generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
+				}
 				rondaLabel.subirRonda(RONDA);
 			}
 
@@ -535,7 +541,6 @@ int main() {
 			}
 
 			//Para los jefes
-
 
 			EnemyBulletIndex I_EnemyBullet = balasEnemigas.begin();
 			EnemyBulletIndex E_EnmeyBullet = balasEnemigas.end();
@@ -860,6 +865,20 @@ int main() {
 				}
 			}
 
+			BossIndex Ib = bosses.begin();
+			BossIndex Eb = bosses.end();
+
+			while (Ib != Eb) {
+				Boss* b = (*Ib);
+				if (b->isAlive())
+				{
+					b->Update(dt);
+
+					b->Shoot(balasEnemigas);
+				}
+
+				++Ib;
+			}
 
 
 			// Clear screen
@@ -874,6 +893,20 @@ int main() {
 				nave->ShowHitbox(window);
 
 			}
+
+			// Recorremos al enemigo y lo dibujamos
+			Ib = bosses.begin();
+			Eb= bosses.end();
+
+			while (Ib != Eb) {
+				Boss* b = (*Ib);
+				if (b->isAlive())
+				{
+					b->Draw(window);
+				}
+				++Ib;
+			}
+
 
 
 			// A - Recorremos la lista de balas y las dibujamos
