@@ -309,6 +309,7 @@ bool isActivoDanoMaximo(PowerUpsList& lista)
 	return false;
 }
 
+void resetearJuego();
 
 int main() {
 
@@ -362,10 +363,6 @@ int main() {
 	while (window.isOpen())
 	{
 
-		if (VIDAS < 0) {
-			estado == Estados::MENU;
-		}
-
 		if (estado == Estados::MENU)
 		{
 			Menu(window);
@@ -378,8 +375,8 @@ int main() {
 			if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip) && !hayJefe(bosses))
 			{
 				subirRonda();
-				generarJefe(bosses, posJefe);
-				//generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
+				//generarJefe(bosses, posJefe);
+				generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
 				rondaLabel.subirRonda(RONDA);
 			}
 
@@ -594,6 +591,7 @@ int main() {
 
 				++I_Power;
 			}
+
 
 
 			// Process events
@@ -982,6 +980,42 @@ int main() {
 				time_power_salud = 120.f;
 			}
 
+			if (VIDAS <= 0) {
+				enemigos.clear();
+				powerUps.clear();
+				chargedBeams.clear();
+				bosses.clear();
+				beams.clear();
+				balasEnemigas.clear();
+				enemigosLip.clear();
+				nave->setPosition(pos_centro);
+
+				estado = Estados::MENU;
+
+				RONDA = 0;
+				N_ENEMIGOS = 10;
+				N_ENEMIGOSLIP = 2;
+
+				PUNTAJE = 0;
+				VIDAS = 5;
+				// VARIABLES DE TIEMPO DURANTE EL JUEGO en segundos;
+
+				time_to_next_level = 5.0f;
+
+				// Constantes para manejar algunas variantes con el tiempo
+				time_to_next_bullet = 0.0f;	//A - Control de la fracuencia de disparo beam normal
+				time_to_next_bullet_charged = 0.0f;
+				time_to_cambiar_disparo = 0.0f; // espera ciertos milisegundo para cambiar entre los disparos
+				time_to_restar_vida = 0.0f; // Espacio de tiempo para restarle la vida
+
+
+				// tiempo en que se genera un powerUps;
+				time_power_salud = 0.f;
+				time_power_dano = 0.f;
+				vidasLabel.resetearVidas();
+
+			}
+
 		}
 
 		else if (estado == Estados::PAUSA)
@@ -1013,3 +1047,4 @@ int main() {
 	return EXIT_SUCCESS;
 
 }
+

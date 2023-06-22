@@ -112,6 +112,8 @@ public:
 	void Miniatura();
 	void Normal();
 	void Golpearon();
+	void setPosition(Vector2f pos);
+
 
 	Sprite getSprite();
 	

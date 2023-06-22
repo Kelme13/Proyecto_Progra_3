@@ -134,6 +134,11 @@ void Nave::Golpearon()
 	this->loGolpearon = true;
 }
 
+void Nave::setPosition(Vector2f pos)
+{
+	this->spr->setPosition(pos);
+}
+
 Sprite Nave::getSprite()
 {
 	return *this->spr;
