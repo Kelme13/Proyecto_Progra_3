@@ -84,7 +84,7 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 
 		if (time_fase <= 0.f)
 		{
-			time_fase = 15.f;
+			time_fase = 20.f;
 			Vector2f pos = { 0.f, 0.f };
 
 

@@ -84,7 +84,7 @@ public:
 	float time_to_next_bossBullet = 0.0f;
 	const float frequencyBulletBoss = 0.5f;
 
-	float time_fase = 5.f;
+	float time_fase = 20.f;
 
 	bool Aparecer(float dt);
 	bool isAlive();

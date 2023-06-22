@@ -542,6 +542,77 @@ int main() {
 
 			//Para los jefes
 
+			BossIndex Ib = bosses.begin();
+			BossIndex Eb = bosses.end();
+
+			while (Ib != Eb) {
+				Boss* b = (*Ib);
+				if (b->isAlive())
+				{
+
+					// Recorre todas la balas - Cargadas
+					ChargedBeamIndex I = chargedBeams.begin();
+					ChargedBeamIndex E = chargedBeams.end();
+
+					while (I != E)
+					{
+						ProyectilChargedBeam* beam = (*I);
+						if (!beam->isAlive())
+						{
+							++I;
+							continue;
+						}
+
+						if (Collision::PixelPerfectTest(b->spr, beam->getSprite()))
+						{
+							beam->kill();
+							b->bajarHp((danoMaximo ? beamCharged_daño * 4 : beamCharged_daño));
+							break;
+						}
+
+						++I;
+					};
+
+					// Recorremos todas la balas normales
+					BeamIndex I_beam = beams.begin();
+					BeamIndex E_beam = beams.end();
+					while (I_beam != E_beam)
+					{
+						Proyectil_beam* beam = (*I_beam);
+						if (!beam->isAlive())
+						{
+							++I_beam;
+							continue;
+						}
+
+						if (Collision::PixelPerfectTest(b->spr, beam->getSprite()))
+						{
+							beam->kill();
+							b->bajarHp((danoMaximo ? bullet_daño * 4 : bullet_daño));
+						}
+
+						++I_beam;
+					}
+
+					if (b->isAlive())
+					{
+						if (Collision::PixelPerfectTest(b->spr, nave->getSprite()))
+						{
+							if (time_to_restar_vida <= 0.f)
+							{
+								nave->Golpearon();
+								VIDAS--;
+								time_to_restar_vida = 5.f;
+							}
+
+						}
+					}
+				}
+
+				++Ib;
+			}
+
+			// Para las balas del enemigo
 			EnemyBulletIndex I_EnemyBullet = balasEnemigas.begin();
 			EnemyBulletIndex E_EnmeyBullet = balasEnemigas.end();
 
@@ -865,8 +936,8 @@ int main() {
 				}
 			}
 
-			BossIndex Ib = bosses.begin();
-			BossIndex Eb = bosses.end();
+			Ib = bosses.begin();
+			Eb = bosses.end();
 
 			while (Ib != Eb) {
 				Boss* b = (*Ib);
