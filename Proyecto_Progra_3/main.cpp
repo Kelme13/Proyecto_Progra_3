@@ -204,11 +204,11 @@ void subirRonda()
 
 //Menu
 
-void Menu(RenderWindow& rt, bool& Abierto) {
+void Menu(RenderWindow& rt) {
 
 	MainMenu* menu = new MainMenu();
 
-	while (rt.isOpen() && Abierto) {
+	while (rt.isOpen()) {
 
 		Event event;
 		while (rt.pollEvent(event)) {
@@ -237,7 +237,7 @@ void Menu(RenderWindow& rt, bool& Abierto) {
 					if (x == 0) {
 						estado = Estados::JUEGO;
 						rt.clear();
-						Abierto = false;
+						
 						return;
 					}
 					else if (x == 1) {
@@ -249,7 +249,7 @@ void Menu(RenderWindow& rt, bool& Abierto) {
 					}
 					else if (x == 3) {
 						rt.close();
-						Abierto = false;
+					
 					}
 
 
@@ -335,6 +335,10 @@ int main() {
 	while (window.isOpen())
 	{
 
+		if (VIDAS < 0) {
+			estado == Estados::MENU;
+		}
+
 		if (estado == Estados::MENU)
 		{
 			Menu(window);
@@ -342,6 +346,7 @@ int main() {
 
 		else if (estado == Estados::JUEGO)
 		{
+			
 
 			if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip))
 			{
