@@ -22,6 +22,7 @@
 #include "RondaLabel.h"
 #include "MainMenu.h"
 #include "PowerupsLabel.h"
+#include "Boss.h"
 
 using namespace std;
 using namespace sf;
@@ -46,6 +47,8 @@ typedef list<Enemy*>::iterator EnemyIndex;
 typedef list<Enemy_Lip*> EnemyLipList;
 typedef list<Enemy_Lip*>::iterator EnemyLipIndex;
 
+typedef list<Boss*> BossList;
+typedef list<Boss*>::iterator BossIndex;
 
 typedef list<PowerUps*> PowerUpsList;
 typedef list<PowerUps*>::iterator PowerUpIndex;
@@ -111,6 +114,14 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 
 }
 
+void generarJefe(list<Boss*>& jefes, Vector2f pos) {
+
+	Boss* jefe = new Boss(100, 3, pos);
+	jefes.push_back(jefe);
+
+
+}
+
 bool hayEnemigos(list<Enemy*>& enemigos)
 {
 	EnemyIndex I = enemigos.begin();
@@ -136,6 +147,18 @@ bool hayEnemigos(list<Enemy_Lip*>& enemigos)
 	{
 		Enemy_Lip* enem = (*I);
 		if (enem->isAlive()) return true;
+	}
+
+	return false;
+}
+
+bool hayJefe(list<Boss*>& boss) {
+	BossIndex I = boss.begin();
+	BossIndex E = boss.end();
+
+	while (I != E) {
+		Boss* b = (*I);
+		if (b->isAlive()) return true;
 	}
 
 	return false;
@@ -301,6 +324,7 @@ int main() {
 	// Load a sprite to display
 
 	Vector2f pos_centro = { window.getSize().x / 2.f, window.getSize().y - 100.f };
+	Vector2f posJefe = { window.getSize().x / 2.f, window.getSize().y - 2000.f };
 
 	Nave* nave = new Nave(pos_centro);
 
@@ -325,6 +349,9 @@ int main() {
 	//E - Contenedor de los enemigos Lip
 	EnemyLipList enemigosLip;
 
+	//Contenedor de Jefes
+	BossList bosses;
+
 	PowerUpsList powerUps;
 	PowerUpIndex I_Power;
 	PowerUpIndex E_Power;
@@ -348,10 +375,11 @@ int main() {
 		{
 			
 
-			if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip))
+			if (!hayEnemigos(enemigos) && !hayEnemigos(enemigosLip) && !hayJefe(bosses))
 			{
 				subirRonda();
-				generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
+				generarJefe(bosses, posJefe);
+				//generarEnemigos(enemigos, enemigosLip, N_ENEMIGOS, N_ENEMIGOSLIP);
 				rondaLabel.subirRonda(RONDA);
 			}
 
