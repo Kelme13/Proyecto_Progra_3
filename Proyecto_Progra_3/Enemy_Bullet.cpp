@@ -14,6 +14,18 @@ Enemy_Bullet::Enemy_Bullet(Vector2f pos_i)
 	spr.setTexture(textura);
 }
 
+Enemy_Bullet::Enemy_Bullet(Vector2f pos_i, float vida)
+{
+	pos = pos_i;
+	m_remaing_live = vida;
+	m_is_alive = true;
+	spr.setPosition(pos);
+
+	vel = { 0.f, 0.f };
+	textura.loadFromFile("Assets\\Mini Pixel Pack 3\\Projectiles\\Player_beam (16 x 16).png");
+	spr.setTexture(textura);
+}
+
 void Enemy_Bullet::Draw(RenderTarget& rt) const
 {
 	rt.draw(spr);

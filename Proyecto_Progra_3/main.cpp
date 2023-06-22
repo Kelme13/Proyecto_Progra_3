@@ -87,7 +87,7 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 		pos = { float(cont_x * 40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80) };
 		cont_x++;
 
-		Enemy* enem = new Enemy(200, pos);
+		Enemy* enem = new Enemy(250, pos);
 		enemigos.push_back(enem);
 	}
 
@@ -106,7 +106,7 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 		pos = { float(cont_x * 40) + float(rand() % 4 * 15) , -200.f - float((rand() % 4) * 20) - float(cont_y * 80) };
 		cont_x++;
 
-		Enemy_Lip* enem = new Enemy_Lip(50, pos);
+		Enemy_Lip* enem = new Enemy_Lip(100, pos);
 		enemigosLip.push_back(enem);
 
 	}
@@ -873,9 +873,11 @@ int main() {
 				if (b->isAlive())
 				{
 					b->Update(dt);
+
+					b->time_fase -= dt;
 					b->time_to_next_bossBullet -= dt;
 
-					if (b->time_to_next_bossBullet <= 0.f)
+					if (b->time_to_next_bossBullet <= 0.f || b->time_fase <= 0)
 					{
 						b->Shoot(balasEnemigas);
 						b->time_to_next_bossBullet = b->frequencyBulletBoss;

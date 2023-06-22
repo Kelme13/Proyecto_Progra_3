@@ -82,7 +82,9 @@ public:
 	Boss(int hp, int barras, Vector2f pos);
 	//Variable para balas
 	float time_to_next_bossBullet = 0.0f;
-	const float frequencyBulletBoss = 1.f;
+	const float frequencyBulletBoss = 0.5f;
+
+	float time_fase = 5.f;
 
 	bool Aparecer(float dt);
 	bool isAlive();
@@ -99,5 +101,9 @@ public:
 private:
 	Animation_Boss animation;
 	Animation_Explosion animaciones_explosion;
+
+	
+	int faseActual = 1;
+
 };
 

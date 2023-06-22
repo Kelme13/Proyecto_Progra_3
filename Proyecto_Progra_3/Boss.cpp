@@ -80,75 +80,111 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 {
 	if (!Aparecer(0.f))
 	{
-		//Diferentes patrones
-		int random = 1 + (rand() % 3);
-		Vector2f pos1;
-		Vector2f pos2;
-		Vector2f pos3;
 
-		Enemy_Bullet* bul1;
-		Enemy_Bullet* bul2;
-		Enemy_Bullet* bul3;
+		int x_espacio = 0;
 
-		switch (random) {
+		if (time_fase <= 0.f)
+		{
+			time_fase = 5.f;
+			Vector2f pos = { 0.f, 0.f };
 
-		case 1:
-			pos1 = { this->getPosition().x + 2, this->getPosition().y };
-			pos2 = { this->getPosition().x + 6, this->getPosition().y };
-			pos3 = { this->getPosition().x + 9, this->getPosition().y };
+			int cont_x = 1;
+			int cont_y = 1;
 
-			bul1 = new Enemy_Bullet(pos1);
-			bul1->getSprite().rotate(-15);
+			for (int i = 1; i < 500; i++)
+			{
 
-			bul2 = new Enemy_Bullet(pos2);
-
-			bul3 = new Enemy_Bullet(pos3);
-			bul3->getSprite().rotate(15);
-
-			EnemyBulletList.push_back(bul1);
-			EnemyBulletList.push_back(bul2);
-			EnemyBulletList.push_back(bul3);
-			break;
-
-		case 2:
-
-			pos1 = { this->getPosition().x, this->getPosition().y };
-			pos2 = { this->getPosition().x + 6, this->getPosition().y };
-			pos3 = { this->getPosition().x + 10, this->getPosition().y };
-
-			bul1 = new Enemy_Bullet(pos1);
-			bul1->getSprite().rotate(-20);
-
-			bul2 = new Enemy_Bullet(pos2);
-
-			bul3 = new Enemy_Bullet(pos3);
-			bul3->getSprite().rotate(20);
-
-			EnemyBulletList.push_back(bul1);
-			EnemyBulletList.push_back(bul2);
-			EnemyBulletList.push_back(bul3);
-			break;
+				if (cont_x != x_espacio && cont_x != x_espacio + 1 && cont_x != x_espacio + 2 && cont_x != x_espacio + 3)
+				{
+					if (cont_x * 31.f > 800.f)
+					{
+						cont_x = 0;
+						cont_y++;
+						x_espacio++;
+					}
+					pos = { cont_x * 30.f + 6.f , -50.f - cont_y * 30.f - 10.f };
+					EnemyBulletList.push_back(new Enemy_Bullet(pos, 8.f));
+				}
 
 
-		case 3:
-			pos1 = { this->getPosition().x + 4, this->getPosition().y };
-			pos2 = { this->getPosition().x + 6, this->getPosition().y };
-			pos3 = { this->getPosition().x + 8, this->getPosition().y };
-
-			bul1 = new Enemy_Bullet(pos1);
-			bul1->getSprite().rotate(-10);
-
-			bul2 = new Enemy_Bullet(pos2);
-
-			bul3 = new Enemy_Bullet(pos3);
-			bul3->getSprite().rotate(10);
-
-			EnemyBulletList.push_back(bul1);
-			EnemyBulletList.push_back(bul2);
-			EnemyBulletList.push_back(bul3);
-			break;
+				cont_x++;
+			}
 
 		}
+		else
+		{
+			//Diferentes patrones
+			int random = 1 + (rand() % 3);
+			Vector2f pos1;
+			Vector2f pos2;
+			Vector2f pos3;
+
+			Enemy_Bullet* bul1;
+			Enemy_Bullet* bul2;
+			Enemy_Bullet* bul3;
+
+			switch (random) {
+
+			case 1:
+				pos1 = { this->getPosition().x + 2, this->getPosition().y };
+				pos2 = { this->getPosition().x + 6, this->getPosition().y };
+				pos3 = { this->getPosition().x + 9, this->getPosition().y };
+
+				bul1 = new Enemy_Bullet(pos1);
+				bul1->getSprite().rotate(-15);
+
+				bul2 = new Enemy_Bullet(pos2);
+
+				bul3 = new Enemy_Bullet(pos3);
+				bul3->getSprite().rotate(15);
+
+				EnemyBulletList.push_back(bul1);
+				EnemyBulletList.push_back(bul2);
+				EnemyBulletList.push_back(bul3);
+				break;
+
+			case 2:
+
+				pos1 = { this->getPosition().x, this->getPosition().y };
+				pos2 = { this->getPosition().x + 6, this->getPosition().y };
+				pos3 = { this->getPosition().x + 10, this->getPosition().y };
+
+				bul1 = new Enemy_Bullet(pos1);
+				bul1->getSprite().rotate(-20);
+
+				bul2 = new Enemy_Bullet(pos2);
+
+				bul3 = new Enemy_Bullet(pos3);
+				bul3->getSprite().rotate(20);
+
+				EnemyBulletList.push_back(bul1);
+				EnemyBulletList.push_back(bul2);
+				EnemyBulletList.push_back(bul3);
+				break;
+
+
+			case 3:
+				pos1 = { this->getPosition().x + 4, this->getPosition().y };
+				pos2 = { this->getPosition().x + 6, this->getPosition().y };
+				pos3 = { this->getPosition().x + 8, this->getPosition().y };
+
+				bul1 = new Enemy_Bullet(pos1);
+				bul1->getSprite().rotate(-10);
+
+				bul2 = new Enemy_Bullet(pos2);
+
+				bul3 = new Enemy_Bullet(pos3);
+				bul3->getSprite().rotate(10);
+
+				EnemyBulletList.push_back(bul1);
+				EnemyBulletList.push_back(bul2);
+				EnemyBulletList.push_back(bul3);
+				break;
+
+			}
+		}
+
+		
 	}
 
 	

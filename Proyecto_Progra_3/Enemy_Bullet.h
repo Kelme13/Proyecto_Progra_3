@@ -72,6 +72,7 @@ class Enemy_Bullet
 public:
 
 public:
+	Enemy_Bullet(Vector2f pos_i, float vida);
 	Enemy_Bullet(Vector2f pos_i);
 
 	void Draw(RenderTarget& rt) const;
