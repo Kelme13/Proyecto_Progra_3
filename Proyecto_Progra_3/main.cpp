@@ -194,7 +194,7 @@ sf::Keyboard::Key k_cambiarD = Keyboard::A;
 
 // PARAMETROS DURANTE EL JUEGO
 
-int RONDA = 4;
+int RONDA = 0;
 int N_ENEMIGOS = 10;
 int N_ENEMIGOSLIP = 2;
 
