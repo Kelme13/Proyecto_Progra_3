@@ -152,6 +152,7 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 		{
 			//Diferentes patrones
 			int random = 1 + (rand() % 3);
+
 			Vector2f pos1;
 			Vector2f pos2;
 			Vector2f pos3;
@@ -163,9 +164,9 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 			switch (random) {
 
 			case 1:
-				pos1 = { this->getPosition().x + 2, this->getPosition().y };
-				pos2 = { this->getPosition().x + 6, this->getPosition().y };
-				pos3 = { this->getPosition().x + 9, this->getPosition().y };
+				pos1 = { this->getPosition().x + 2.f, this->getPosition().y + 10.f };
+				pos2 = { this->getPosition().x - 30.f, this->getPosition().y + 10.f };
+				pos3 = { this->getPosition().x - 60.f, this->getPosition().y + 10.f };
 
 				bul1 = new Enemy_Bullet(pos1);
 				bul1->getSprite().rotate(-15);
@@ -182,9 +183,9 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 
 			case 2:
 
-				pos1 = { this->getPosition().x, this->getPosition().y };
-				pos2 = { this->getPosition().x + 6, this->getPosition().y };
-				pos3 = { this->getPosition().x + 10, this->getPosition().y };
+				pos1 = { this->getPosition().x, this->getPosition().y + 10.f};
+				pos2 = { this->getPosition().x + 31.f, this->getPosition().y + 10.f };
+				pos3 = { this->getPosition().x - 31.f, this->getPosition().y + 10.f };
 
 				bul1 = new Enemy_Bullet(pos1);
 				bul1->getSprite().rotate(-20);
@@ -201,9 +202,9 @@ void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
 
 
 			case 3:
-				pos1 = { this->getPosition().x + 4, this->getPosition().y };
-				pos2 = { this->getPosition().x + 6, this->getPosition().y };
-				pos3 = { this->getPosition().x + 8, this->getPosition().y };
+				pos1 = { this->getPosition().x + 40.f, this->getPosition().y + 10.f };
+				pos2 = { this->getPosition().x + 75.f, this->getPosition().y + 10.f };
+				pos3 = { this->getPosition().x + 110.f, this->getPosition().y + 10.f };
 
 				bul1 = new Enemy_Bullet(pos1);
 				bul1->getSprite().rotate(-10);
