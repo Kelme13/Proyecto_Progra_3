@@ -116,7 +116,7 @@ void generarEnemigos(list<Enemy*>& enemigos, list<Enemy_Lip*>& enemigosLip, int 
 
 void generarJefe(list<Boss*>& jefes, Vector2f pos) {
 
-	Boss* jefe = new Boss(100, 3, pos);
+	Boss* jefe = new Boss(1000, 3, pos);
 	jefes.push_back(jefe);
 
 

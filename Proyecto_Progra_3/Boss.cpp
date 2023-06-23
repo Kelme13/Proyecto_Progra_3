@@ -71,9 +71,23 @@ void Boss::Update(float dt)
 	{
 		animation.Update(dt);
 		animation.ApplyToSprite(spr);
-	}
 
-	this->Aparecer(dt);
+		if (!this->Aparecer(dt))
+		{
+			
+			if (this->spr.getPosition().x >= 550.f)
+			{
+				spr.move(dt * -Speed, 0.f);
+			}
+			else
+			{
+				spr.move(dt * Speed, 0.f);
+			}
+
+		}
+
+
+	}
 }
 
 void Boss::Shoot(list<Enemy_Bullet*>& EnemyBulletList)
